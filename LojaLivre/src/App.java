@@ -4,7 +4,8 @@ import java.util.Scanner;
 
 public class App{
     public static void main(String[] args) throws Exception {
-        DateTimeFormatter formater = DateTimeFormatter.ofPattern("dd-MM-yyyy");//Aqui muda o jeito de escrever a data tem que ser em ingles e M no mes
+        //teste
+        DateTimeFormatter formater = DateTimeFormatter.ofPattern("MM-yyyy");//Aqui muda o jeito de escrever a data tem que ser em ingles e M no mes
         LocalDate date,dateUser;
         Card c;
         Scanner sc = new Scanner(System.in);
@@ -20,7 +21,7 @@ public class App{
         e=sc.nextInt();
         if(e==1){
             sc.nextLine();
-            System.out.println("qual o nome do cartão");
+            System.out.println("qual o nome do dono: ");
             nd=sc.nextLine();
             System.out.println("Numero do cartão");//
             nc=sc.nextLine();
