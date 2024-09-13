@@ -9,6 +9,12 @@ public class Client{
         this.nameCient = nameClient;
         this.ageClient = ageClient;
         this.cpfClient = cpfCliente;
+    }
+
+    public Client(String nameCient, int ageClient, String cpfCliente, Card c) {
+        this.nameCient = nameCient;
+        this.ageClient = ageClient;
+        this.cpfClient = cpfCliente;
         this.cardsClient = new ArrayList<>();
     }
 
