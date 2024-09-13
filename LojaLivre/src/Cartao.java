@@ -43,7 +43,7 @@ public class Cartao {
     }
     @Override
     public String toString() {
-        return "Cartao [nomeDono=" + nomeDono + ", numeroDoCartão=" + numeroDoCartão + ", cvv=" + cvv + ", tipo="
+        return "Cartao [Nome do dono=" + nomeDono + ", numeroDoCartão=" + numeroDoCartão + ", cvv=" + cvv + ", tipo="
                 + tipo + ", validade=" + validade + "]";
     }
     
