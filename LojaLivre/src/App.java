@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 public class App {
     public static void main(String[] args) throws Exception {
+        //teste
         DateTimeFormatter formater = DateTimeFormatter.ofPattern("MM-yyyy");//Aqui muda o jeito de escrever a data tem que ser em ingles e M no mes
         LocalDate date,dateUser;
         Cartao c;
