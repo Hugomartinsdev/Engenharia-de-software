@@ -4,14 +4,8 @@ public class Client{
     private String nameCient, cpfClient;
     private int ageClient;
     private ArrayList<Card> cardsClient;
-    
-    public Client(String nameClient, int ageClient, String cpfCliente){
-        this.nameCient = nameClient;
-        this.ageClient = ageClient;
-        this.cpfClient = cpfCliente;
-    }
 
-    public Client(String nameCient, int ageClient, String cpfCliente, Card c) {
+    public Client(String nameCient, int ageClient, String cpfCliente) {
         this.nameCient = nameCient;
         this.ageClient = ageClient;
         this.cpfClient = cpfCliente;
@@ -54,15 +48,15 @@ public class Client{
             return "Nenhum cartão disponível";
         }
 
-        for (Card cartao : cardsClient){
-            output += cartao.toString();
+        for (Card card : cardsClient){
+            output += card.toString() + " ";
         }
         return output;
     }
 
     @Override
     public String toString(){
-        return "Cliente: \n Nome: " + nameCient + "\n Idade: " + ageClient + "\n Cpf: " + cpfClient + "\n Cartões: " + 
-               getAllCards() + "\n";
+        return "Cliente: \n Nome: " + nameCient + "\n Idade: " + ageClient + "\n Cpf: " + cpfClient + "\n Cartões: \n " + 
+               this.getAllCards();
     }
 }
