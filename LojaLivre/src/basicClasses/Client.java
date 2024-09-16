@@ -4,12 +4,14 @@ public class Client{
     private String nameCient, cpfClient;
     private int ageClient;
     private ArrayList<Card> cardsClient;
+    private ArrayList<Order> ordersClient;
 
     public Client(String nameCient, int ageClient, String cpfCliente) {
         this.nameCient = nameCient;
         this.ageClient = ageClient;
         this.cpfClient = cpfCliente;
         this.cardsClient = new ArrayList<>();
+        this.ordersClient = new ArrayList<>();
     }
 
     public String getNameCient(){
@@ -33,14 +35,15 @@ public class Client{
         this.cpfClient = cpfClient;
     }
 
-    public Card getCartaoFromArray(int index){
+    public ArrayList<Card> getCardsClient(){
+        return cardsClient;
+    }
+    public Card getCardsFromArray(int index){
         return cardsClient.get(index);
     }
-
     public void addCards(Card newCard){
         this.cardsClient.add(newCard);
     }
-
     public String getAllCards(){
         String output = "";
 
@@ -54,9 +57,31 @@ public class Client{
         return output;
     }
 
+    public ArrayList<Order> getOrdersClient(){
+        return ordersClient;
+    }
+    public Order getOrdersFromArray(int index){
+        return ordersClient.get(index);
+    }
+    public void addOrders(Order newOrder){
+        this.ordersClient.add(newOrder);
+    }
+    public String getAllOrders(){
+        String output = "";
+
+        if(ordersClient.size() == 0){
+            return "Nenhum pedido disponível";
+        }
+
+        for (Order order : ordersClient){
+            output += order.toString() + " ";
+        }
+        return output;
+    }
+
     @Override
     public String toString(){
-        return "Cliente: \n Nome: " + nameCient + "\n Idade: " + ageClient + "\n Cpf: " + cpfClient + "\n Cartões: \n " + 
-               this.getAllCards();
+        return nameCient + ": \n Idade: " + ageClient + "\n Cpf: " + cpfClient + "\n Cartões: \n " + 
+               this.getAllCards() + "\n Pedidos: \n " + this.getAllOrders();
     }
 }

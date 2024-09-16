@@ -6,12 +6,14 @@ public class App{
 
     static Scanner sc;
     static Client tempClient;
+    static ProductsManager productsManager;
     public static void main(String[] args){
         
         sc = new Scanner(System.in);
         char menuInput;
 
         tempClient = new Client(null, 0, null); //cliente temporario pra testar as funções
+        productsManager = new ProductsManager();
 
         do{
 
@@ -53,7 +55,7 @@ public class App{
         while(true){
             newClientName = sc.nextLine();
             if(newClientName.equals("")){
-                System.out.println("ERRO: Entrada inválida.");
+                System.out.println("ERRO: Entrada vazia.");
                 continue;
             }
             break;
@@ -62,9 +64,13 @@ public class App{
         //garantir sempre ser int
         int newClientAge;
         while(true){
-            System.out.println("Sua idade? (anos) ");
+            System.out.println("Sua idade? (anos)");
             try{
                 newClientAge = Integer.parseInt(sc.nextLine());
+                if(newClientAge > 99){
+                    System.out.println("ERRO: Idade inválida.");
+                    continue;
+                }
                 break;
             }catch(Exception e){
                 System.out.println("ERRO: Entrada inválida.");
@@ -105,16 +111,16 @@ public class App{
             if(newCardType.equals("C") || newCardType.equals("D")){
                 break;
             }
-            System.out.println("ERRO: Entrada inválida. ");
+            System.out.println("ERRO: Entrada inválida.");
         }
 
         //garantir que não é vazio
-        System.out.println("Qual o nome do dono? ");
+        System.out.println("Qual o nome do dono?");
         String newCardName;
         while(true){
             newCardName = sc.nextLine();
             if(newCardName.equals("")){
-                System.out.println("ERRO: Entrada inválida.");
+                System.out.println("ERRO: Entrada vazia.");
                 continue;
             }
             break;
@@ -123,20 +129,20 @@ public class App{
         //garantir que o número seja sempre tamanho 16/19, que começe com 3-6 e que possua somente números
         String newCardNumber;
         while(true){
-            System.out.println("Numero do cartão? ");
+            System.out.println("Numero do cartão?");
             newCardNumber = sc.nextLine();
             try{
                 Long.parseLong(newCardNumber);
             }catch(Exception e){
-                System.out.println("ERRO: Entrada inválida. ");
+                System.out.println("ERRO: Entrada inválida.");
                 continue;
             }
             if(newCardNumber.length() != 16 && newCardNumber.length() != 19){
-                System.out.println("ERRO: Quantidade de dígitos inválida. ");
+                System.out.println("ERRO: Quantidade de dígitos inválida.");
                 continue;
             }
             if(newCardNumber.charAt(0) < 51 || newCardNumber.charAt(0) > 54){
-                System.out.println("ERRO: Número de cartão inválido. ");
+                System.out.println("ERRO: Número de cartão inválido.");
                 continue;
             }
             break;
@@ -150,11 +156,11 @@ public class App{
             try{
                 Integer.parseInt(newCardCvv);
             }catch(Exception e){
-                System.out.println("ERRO: Entrada inválida. ");
+                System.out.println("ERRO: Entrada inválida.");
                 continue;
             }
             if(newCardCvv.length() != 3){
-                System.out.println("ERRO: Quantidade de dígitos inválida. ");
+                System.out.println("ERRO: Quantidade de dígitos inválida.");
                 continue;
             }
             break;
@@ -170,11 +176,11 @@ public class App{
             //localdate.now() = data de hoje
             try{
                 if(LocalDate.parse(newCardExpDate, DateTimeFormatter.ofPattern("dd/MM/yy")).isBefore(LocalDate.now())){
-                    System.out.println("ERRO: Data de validade expirada. ");
+                    System.out.println("ERRO: Data de validade expirada.");
                     continue;
                 }
             }catch(Exception e){
-                System.out.println("ERRO: Entrada inválida. ");
+                System.out.println("ERRO: Entrada inválida.");
                 continue;
             }
             break;
