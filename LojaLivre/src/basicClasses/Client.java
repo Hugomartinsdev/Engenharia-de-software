@@ -3,15 +3,17 @@ package basicClasses;
 import java.util.ArrayList;
 
 public class Client{
-    private String nameCient, cpfClient;
+    private String nameCient, cpfClient, loginClient, passClient;
     private int ageClient;
     private ArrayList<Card> cardsClient;
     private ArrayList<Order> ordersClient;
 
-    public Client(String nameCient, int ageClient, String cpfCliente) {
+    public Client(String nameCient, int ageClient, String cpfCliente, String loginClient, String passClient){
         this.nameCient = nameCient;
         this.ageClient = ageClient;
         this.cpfClient = cpfCliente;
+        this.loginClient = loginClient;
+        this.passClient = passClient;
         this.cardsClient = new ArrayList<>();
         this.ordersClient = new ArrayList<>();
     }
@@ -35,6 +37,20 @@ public class Client{
     }
     public void setCpfClient(String cpfClient){
         this.cpfClient = cpfClient;
+    }
+
+    public String getLoginClient(){
+        return loginClient;
+    }
+    public void setLoginClient(String loginClient){
+        this.loginClient = loginClient;
+    }
+
+    public String getPassClient(){
+        return passClient;
+    }
+    public void setPassClient(String passClient){
+        this.passClient = passClient;
     }
 
     public ArrayList<Card> getCardsClient(){

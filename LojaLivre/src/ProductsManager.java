@@ -16,6 +16,7 @@ public class ProductsManager{
     }
 
     public void createProduct(Scanner sc){
+        //var novas para a criação de produto
         String newProductName = "";
         String newSellerName = "";
         String newProductDescrpt = "";
@@ -23,9 +24,7 @@ public class ProductsManager{
         int newProductAmount = 0;
 
         int currentState = 0;
-
         while(currentState != 5){
-
             //instruções pro usuário
             switch(currentState){
                 case 0:
@@ -41,7 +40,7 @@ public class ProductsManager{
                     System.out.println("Preço do produto? (R$, divida o centavo com ponto)");
                 break;
                 case 4:
-                System.out.println("Quantidade do produto?");
+                    System.out.println("Quantidade do produto?");
                 break;
             }
             System.out.println("(Digite < para voltar, X para cancelar)");
@@ -59,70 +58,70 @@ public class ProductsManager{
             //adquirição dos valores do produto
             switch(currentState){
                 case 0:
+                    //garantir que não é vazio
                     newProductName = this.input;
                     if(newProductName.equals("")){
-                        System.out.println("\n ERRO: Entrada inválida. \n");
+                        System.out.println("\n ERRO: Entrada vazia. \n");
                         continue;
                     }
                     currentState++;
                 break;
-            
                 case 1:
                     //garantir que não é vazio
-                    newSellerName = this.input;
-                    if(newSellerName.equals("")){
-                        System.out.println("\n ERRO: Entrada inválida. \n");
+                    if(this.input.equals("")){
+                        System.out.println("\n ERRO: Entrada vazia. \n");
                         continue;
                     }
+                    newSellerName = this.input;
                     currentState++;
                 break;
-
                 case 2:
                     //garantir que não é vazio
-                    newProductDescrpt = this.input;
-                    if(newProductDescrpt.equals("")){
-                        System.out.println("\n ERRO: Entrada inválida. \n");
+                    if(this.input.equals("")){
+                        System.out.println("\n ERRO: Entrada vazia. \n");
                         continue;
                     }
+                    newProductDescrpt = this.input;
                     currentState++;
                 break;
-                
                 case 3:
-                    //garantir sempre ser float e maior que 0
+                    //garantir que não é vazio, sempre ser float e maior que 0
+                    if(this.input.equals("")){
+                        System.out.println("\n ERRO: Entrada vazia. \n");
+                        continue;
+                    }
                     try{
                         newProductPrice = Float.parseFloat(this.input);                        
+                        if(newProductPrice < 0){
+                            System.out.println("\n ERRO: Preço inválido. (Somente valores maiores que zero permitídos)\n");
+                            continue;
+                        }
+                        currentState++;
                     }catch(Exception e){
-                        System.out.println("\n ERRO: Entrada inválida. \n");
-                        continue;
+                        System.out.println("\n ERRO: Somente números e ponto permitidos. \n");
                     }
-                    if(newProductPrice < 0){
-                        System.out.println("\n ERRO: Preço inválido. \n");
-                        continue;
-                    }
-                    currentState++;
                 break;
-                
                 case 4:
-                    //garantir sempre ser int e maior que 0
+                    //garantir que não é vazio, sempre ser int e maior que 0
+                    if(this.input.equals("")){
+                        System.out.println("\n ERRO: Entrada vazia. \n");
+                        continue;
+                    }
                     try{
                         newProductAmount = Integer.parseInt(this.input);
+                        if(newProductAmount < 0){
+                            System.out.println("\n ERRO: Quantidade inválida. (Somente valores maiores que zero permitídos)\n");
+                            continue;
+                        }
+                        currentState++;
                     }catch(Exception e){
-                        System.out.println("\n ERRO: Entrada inválida. \n");
-                        continue;
+                        System.out.println("\n ERRO: Somente números permitídos. \n");
                     }
-                    if(newProductAmount < 0){
-                        System.out.println("\n ERRO: Quantidade inválida. \n");
-                        continue;
-                    }
-                    currentState++;
                 break;
             }
             
         }
-        
-        Product newProduct = new Product(newProductName, newSellerName, newProductDescrpt, newProductPrice, newProductAmount, idGen);
-        idGen++;
-        this.productsBank.add(newProduct);
+        this.productsBank.add(new Product(newProductName, newSellerName, newProductDescrpt, newProductPrice, newProductAmount, idGen++));
         System.out.println("Produto adicionado com sucesso! \n");
     }
     
