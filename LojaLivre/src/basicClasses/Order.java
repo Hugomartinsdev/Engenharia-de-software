@@ -1,3 +1,5 @@
+package basicClasses;
+
 import java.util.ArrayList;
 
 public class Order{
@@ -19,11 +21,20 @@ public class Order{
     public void addProductsOrder(Product newProduct){
         this.productsOrder.add(newProduct);
     }
+    public ArrayList<Product> getProductsArray(){
+        return this.productsOrder;
+    }
     public String getAllProducts(){
         String output = "";
-
-        for (Product product : productsOrder){
+        for(Product product : productsOrder){
             output += product.toString() + " ";
+        }
+        return output;
+    }
+    public float getTotalPrice(){
+        float output = 0;
+        for(Product product : productsOrder){
+            output += product.getPriceProduct() * product.getQntProduct();
         }
         return output;
     }
@@ -37,7 +48,7 @@ public class Order{
 
     @Override
     public String toString(){
-        return "Pedido: \n Produtos: " + getAllProducts() + "\n Endereço de entrega: " + this.adressOrder + "\n";
+        return "Pedido: \n Produtos: " + this.getAllProducts() + "\n Custo total: " + this.getTotalPrice() + "\n Endereço de entrega: " + this.adressOrder + "\n";
     }
 
     

@@ -1,11 +1,15 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import basicClasses.Product;
+import basicClasses.Order;
+
 public class ProductsManager{
 
     private ArrayList<Product> productsBank;
     private String input;
     private int idGen = 0;
+    Order tempOrder;
 
     public ProductsManager(){
         this.productsBank = new ArrayList<>();
@@ -34,7 +38,7 @@ public class ProductsManager{
                     System.out.println("Descrição do produto?");
                 break;
                 case 3:
-                    System.out.println("Preço do produto? (R$)");
+                    System.out.println("Preço do produto? (R$, divida o centavo com ponto)");
                 break;
                 case 4:
                 System.out.println("Quantidade do produto?");
@@ -55,76 +59,62 @@ public class ProductsManager{
             //adquirição dos valores do produto
             switch(currentState){
                 case 0:
-                    //garantir que não é vazio
-                    while(true){
-                        newProductName = this.input;
-                        if(newProductName.equals("")){
-                            System.out.println("ERRO: Entrada inválida.");
-                            continue;
-                        }
-                        currentState++;
-                        break;
-                    }  
+                    newProductName = this.input;
+                    if(newProductName.equals("")){
+                        System.out.println("\n ERRO: Entrada inválida. \n");
+                        continue;
+                    }
+                    currentState++;
                 break;
             
                 case 1:
                     //garantir que não é vazio
-                    while(true){
-                        newSellerName = this.input;
-                        if(newSellerName.equals("")){
-                            System.out.println("ERRO: Entrada inválida.");
-                            continue;
-                        }
-                        currentState++;
-                        break;
+                    newSellerName = this.input;
+                    if(newSellerName.equals("")){
+                        System.out.println("\n ERRO: Entrada inválida. \n");
+                        continue;
                     }
+                    currentState++;
                 break;
 
                 case 2:
                     //garantir que não é vazio
-                    while(true){
-                        newProductDescrpt = this.input;
-                        if(newProductDescrpt.equals("")){
-                            System.out.println("ERRO: Entrada inválida.");
-                            continue;
-                        }
-                        currentState++;
-                        break;
+                    newProductDescrpt = this.input;
+                    if(newProductDescrpt.equals("")){
+                        System.out.println("\n ERRO: Entrada inválida. \n");
+                        continue;
                     }
+                    currentState++;
                 break;
                 
                 case 3:
                     //garantir sempre ser float e maior que 0
-                    while(true){
-                        try{
-                            newProductPrice = Float.parseFloat(this.input);
-                            if(newProductPrice < 0){
-                                System.out.println("ERRO: Preço inválido.");
-                                continue;
-                            }
-                            currentState++;
-                            break;
-                        }catch(Exception e){
-                            System.out.println("ERRO: Entrada inválida.");
-                        }
+                    try{
+                        newProductPrice = Float.parseFloat(this.input);                        
+                    }catch(Exception e){
+                        System.out.println("\n ERRO: Entrada inválida. \n");
+                        continue;
                     }
+                    if(newProductPrice < 0){
+                        System.out.println("\n ERRO: Preço inválido. \n");
+                        continue;
+                    }
+                    currentState++;
                 break;
                 
                 case 4:
                     //garantir sempre ser int e maior que 0
-                    while(true){
-                        try{
-                            newProductAmount = Integer.parseInt(this.input);
-                            if(newProductAmount < 0){
-                                System.out.println("ERRO: Quantidade inválida.");
-                                continue;
-                            }
-                            currentState++;
-                            break;
-                        }catch(Exception e){
-                            System.out.println("ERRO: Entrada inválida.");
-                        }
+                    try{
+                        newProductAmount = Integer.parseInt(this.input);
+                    }catch(Exception e){
+                        System.out.println("\n ERRO: Entrada inválida. \n");
+                        continue;
                     }
+                    if(newProductAmount < 0){
+                        System.out.println("\n ERRO: Quantidade inválida. \n");
+                        continue;
+                    }
+                    currentState++;
                 break;
             }
             
@@ -143,7 +133,7 @@ public class ProductsManager{
             System.out.println("(Digite X para cancelar)");
             this.input = sc.nextLine();
             if(this.input.equals("")){
-                System.out.println("ERRO: Entrada vazia.");
+                System.out.println("\n ERRO: Entrada vazia. \n");
                 continue;
             }
             break;
@@ -169,31 +159,34 @@ public class ProductsManager{
     }
 
     public void deleteProduct(Scanner sc){
-        //garantir que não seja vazio
+        //garantir que sempre seja int e que não seja vazio
         while(true){
             System.out.println("Digite o ID do produto: ");
             System.out.println("(Digite X para cancelar)");
             this.input = sc.nextLine();
-            if(this.input.equals("")){
-                System.out.println("ERRO: Entrada vazia.");
-                continue;
-            }
-            break;
-        }
-
-        if(this.input.equals("X")){
-            return;
-        }
-
-        //checagem de ID
-        for(Product product : productsBank){
-            if(product.getIdProduct() == Integer.parseInt(this.input)){
-                System.out.println("Produto removido \n");
+            if(this.input.equals("X")){
                 return;
             }
-        }
-        System.out.println("Nenhum produto com esse ID encontrado \n");
+            try{
+                if(Integer.parseInt(this.input) < 0){
+                    System.out.println("\n ERRO: ID inválido. \n");
+                    continue;
+                }
+            }catch(Exception e){
+                System.out.println("\n ERRO: Entrada inválida. \n");
+                continue;
+            }
 
+            //checagem de ID
+            for(Product product : productsBank){
+                if(product.getIdProduct() == Integer.parseInt(this.input)){
+                    productsBank.remove(product);
+                    System.out.println("Produto removido \n");
+                    return;
+                }
+            }
+            System.out.println("\n ERRO: Nenhum produto com esse ID encontrado. \n");
+        }
     }
 
     public void createOrder(Scanner sc){        
@@ -203,7 +196,7 @@ public class ProductsManager{
             System.out.println("(Digite X para cancelar)");
             this.input = sc.nextLine();
             if(this.input.equals("")){
-                System.out.println("ERRO: Entrada vazia.");
+                System.out.println("\n ERRO: Entrada vazia. \n");
                 continue;
             }
             break;
@@ -216,21 +209,29 @@ public class ProductsManager{
         String newOrderAdress = this.input;
         Order newOrder = new Order(newOrderAdress);
         boolean doesHaveProduct;
+        ArrayList<Integer> tempQnt = new ArrayList<>();
 
+        //loop pro usuario colocar mais de 1 produto e escolher quando fechar o pedido
         while(true){
             System.out.println("Digite o ID do produto a ser comprado: ");
             System.out.println("(Digite F para fechar o pedido, X para cancelar)");
             this.input = sc.nextLine();
-            if(this.input.equals("")){
-                System.out.println("ERRO: Entrada vazia.");
-                continue;
-            }
             if(this.input.equals("F")){
                 break;
             }
             if(this.input.equals("X")){
                 return;
             }
+            try{
+                if(Integer.parseInt(this.input) < 0){
+                    System.out.println("\n ERRO: ID inválido. \n");
+                    continue;
+                }
+            }catch(Exception e){
+                System.out.println("\n ERRO: Entrada inválida. \n");
+                continue;
+            }
+
             doesHaveProduct = false;
             for(Product product : productsBank){
                 if(product.getIdProduct() == Integer.parseInt(this.input)){
@@ -238,27 +239,54 @@ public class ProductsManager{
                         System.out.println("Digite a quantidade: ");
                         System.out.println("(Quantidade disponível: " + product.getQntProduct() + ")");
                         this.input = sc.nextLine();
-                        if(this.input.equals("")){
-                            System.out.println("ERRO: Entrada vazia.");
-                            continue;
-                        }
                         try{
-                            Integer.parseInt(this.input);
+                            if(Integer.parseInt(this.input) < 1){
+                                System.out.println("\n ERRO: Quantidade inválida. \n");
+                                continue;
+                            }
+                            if(product.getQntProduct() < Integer.parseInt(this.input)){
+                                System.out.println("\n ERRO: Quantidade indisponível. \n");
+                                continue;
+                            }
                         }catch(Exception e){
-                            System.out.println("Entrada inválida.");
+                            System.out.println("\n ERRO: Entrada inválida. \n");
                             continue;
                         }
                         break;
                     }
+                    tempQnt.add(Integer.parseInt(this.input));
                     newOrder.addProductsOrder(product);
                     doesHaveProduct = true;
                 }
             }
             if(!doesHaveProduct){
-                System.out.println("ERRO: Nenhum produto com esse ID.");
+                System.out.println("\n ERRO: Nenhum produto com esse ID. \n");
             }
         }
 
+        //subtrair os produtos do banco de dados
+        for(int i = 0; i < productsBank.size(); i++){
+            if(!newOrder.getProductsArray().contains(productsBank.get(i))){
+                continue;
+            }
+            for(int j = 0; j < newOrder.getProductsArray().size(); j++){
+                if(!productsBank.get(i).equals(newOrder.getProductsArray().get(j))){
+                    continue;
+                }
+                productsBank.get(i).setQntProduct(productsBank.get(i).getQntProduct() - tempQnt.get(j));
+
+                //abominação. infelizmente tive que recorrer a isso.
+                //isso é so um clone mas que altera a quantidade do produto pra ser a quantidade certa
+                newOrder.getProductsArray().set(j, new Product(productsBank.get(i).getNameProduct(), productsBank.get(i).getNameSellerProduct(), productsBank.get(i).getDescrptProduct(), 
+                                                               productsBank.get(i).getPriceProduct(), tempQnt.get(j), productsBank.get(i).getIdProduct()));
+                if(productsBank.get(i).getQntProduct() == 0){
+                    productsBank.remove(productsBank.get(i));
+                }
+                break;
+            }
+        }
+        tempOrder = newOrder;
+        System.out.println("Pedido criado!");
     }
 
     public void showAllProducts(){

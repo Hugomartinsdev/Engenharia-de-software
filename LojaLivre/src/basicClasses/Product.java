@@ -1,3 +1,5 @@
+package basicClasses;
+
 public class Product{
 
     private String nameProduct, nameSellerProduct, descrptProduct;

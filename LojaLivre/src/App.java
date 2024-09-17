@@ -2,6 +2,9 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
+import basicClasses.Client;
+import basicClasses.Card;
+
 public class App{
 
     static Scanner sc;
@@ -21,7 +24,7 @@ public class App{
             menuInput = sc.nextLine().charAt(0);
 
             switch(menuInput){
-                case 'P':
+                case 'A':
                     createClient();
                 break;
 
@@ -33,12 +36,32 @@ public class App{
                     System.out.println(tempClient.toString());
                 break;
 
+                case 'P':
+                    productsManager.createProduct(sc);
+                break;
+
+                case 'S':
+                    productsManager.searchProduct(sc);
+                break;
+
+                case 'E':
+                    productsManager.deleteProduct(sc);
+                break;
+
+                case 'O':
+                    productsManager.createOrder(sc);
+                break;
+
                 case 'X':
                     System.out.println("Finalizando...");
                 break;
+
+                case 'V':
+                    System.out.println(productsManager.tempOrder.toString());
+                break;
             
                 default:
-                    System.out.println("ERRO: Comando inválido. \n");
+                    System.out.println("\n ERRO: Comando inválido. \n");
                 break;
             }
 
@@ -55,7 +78,7 @@ public class App{
         while(true){
             newClientName = sc.nextLine();
             if(newClientName.equals("")){
-                System.out.println("ERRO: Entrada vazia.");
+                System.out.println("\n ERRO: Entrada vazia. \n");
                 continue;
             }
             break;
@@ -68,12 +91,12 @@ public class App{
             try{
                 newClientAge = Integer.parseInt(sc.nextLine());
                 if(newClientAge > 99){
-                    System.out.println("ERRO: Idade inválida.");
+                    System.out.println("\n ERRO: Idade inválida. \n");
                     continue;
                 }
                 break;
             }catch(Exception e){
-                System.out.println("ERRO: Entrada inválida.");
+                System.out.println("\n ERRO: Entrada inválida. \n");
             }
         }
 
@@ -85,13 +108,13 @@ public class App{
             try{
                 Long.parseLong(newClientCpf);
             }catch(Exception e){
-                System.out.println("ERRO: Entrada inválida. ");
+                System.out.println("\n ERRO: Entrada inválida. \n");
                 continue;
             }
             if(newClientCpf.length() == 11){
                 break;
             }
-            System.out.println("ERRO: CPF inválido. ");
+            System.out.println("\n ERRO: CPF inválido. \n");
         }
 
         tempClient = new Client(newClientName, newClientAge, newClientCpf);
@@ -111,7 +134,7 @@ public class App{
             if(newCardType.equals("C") || newCardType.equals("D")){
                 break;
             }
-            System.out.println("ERRO: Entrada inválida.");
+            System.out.println("\n ERRO: Entrada inválida. \n");
         }
 
         //garantir que não é vazio
@@ -120,7 +143,7 @@ public class App{
         while(true){
             newCardName = sc.nextLine();
             if(newCardName.equals("")){
-                System.out.println("ERRO: Entrada vazia.");
+                System.out.println("\n ERRO: Entrada vazia. \n");
                 continue;
             }
             break;
@@ -134,15 +157,15 @@ public class App{
             try{
                 Long.parseLong(newCardNumber);
             }catch(Exception e){
-                System.out.println("ERRO: Entrada inválida.");
+                System.out.println("\n ERRO: Entrada inválida. \n");
                 continue;
             }
             if(newCardNumber.length() != 16 && newCardNumber.length() != 19){
-                System.out.println("ERRO: Quantidade de dígitos inválida.");
+                System.out.println("\n ERRO: Quantidade de dígitos inválida. \n");
                 continue;
             }
             if(newCardNumber.charAt(0) < 51 || newCardNumber.charAt(0) > 54){
-                System.out.println("ERRO: Número de cartão inválido.");
+                System.out.println("\n ERRO: Número de cartão inválido. \n");
                 continue;
             }
             break;
@@ -156,11 +179,11 @@ public class App{
             try{
                 Integer.parseInt(newCardCvv);
             }catch(Exception e){
-                System.out.println("ERRO: Entrada inválida.");
+                System.out.println("\n ERRO: Entrada inválida. \n");
                 continue;
             }
             if(newCardCvv.length() != 3){
-                System.out.println("ERRO: Quantidade de dígitos inválida.");
+                System.out.println("\n ERRO: Quantidade de dígitos inválida. \n");
                 continue;
             }
             break;
@@ -176,11 +199,11 @@ public class App{
             //localdate.now() = data de hoje
             try{
                 if(LocalDate.parse(newCardExpDate, DateTimeFormatter.ofPattern("dd/MM/yy")).isBefore(LocalDate.now())){
-                    System.out.println("ERRO: Data de validade expirada.");
+                    System.out.println("\n ERRO: Data de validade expirada. \n");
                     continue;
                 }
             }catch(Exception e){
-                System.out.println("ERRO: Entrada inválida.");
+                System.out.println("\n ERRO: Entrada inválida. \n");
                 continue;
             }
             break;
@@ -194,9 +217,14 @@ public class App{
     public static void menu(){
 
         System.out.println("-MENU-");
-        System.out.println("P: criar conta");
+        System.out.println("A: criar conta");
         System.out.println("C: criar cartão e adicionar a conta");
         System.out.println("D: ver dados do cliente");
+        System.out.println("P: criar produto");
+        System.out.println("S: procurar produtos");
+        System.out.println("E: apagar produto");
+        System.out.println("O: criar pedido");
+        System.out.println("V: ver dados do pedido");
         System.out.println("X: sair");
         System.out.println("Digite seu comando:");
 

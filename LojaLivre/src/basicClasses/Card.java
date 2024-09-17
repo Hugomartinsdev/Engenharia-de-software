@@ -1,3 +1,5 @@
+package basicClasses;
+
 public class Card{
     private String nameOwnerCard, numCard, cvvCard, expDateCard;
     private boolean cardType;
