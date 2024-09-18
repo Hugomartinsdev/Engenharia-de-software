@@ -67,7 +67,7 @@ public class App{
         System.out.println("-MENU-");
         System.out.println("A: criar conta");
         System.out.println("C: criar cartão e adicionar a conta");
-        System.out.println("D: ver dados de um cliente");
+        System.out.println("D: ver dados da conta");
         System.out.println("P: criar produto");
         System.out.println("S: procurar produtos");
         System.out.println("E: apagar produto");

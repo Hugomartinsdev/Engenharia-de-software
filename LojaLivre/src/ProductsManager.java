@@ -215,6 +215,7 @@ public class ProductsManager{
             System.out.println("Digite o ID do produto a ser comprado: ");
             System.out.println("(Digite F para fechar o pedido, X para cancelar)");
             this.input = sc.nextLine();
+
             if(this.input.equals("F")){
                 break;
             }
@@ -274,7 +275,7 @@ public class ProductsManager{
                 }
                 productsBank.get(i).setQntProduct(productsBank.get(i).getQntProduct() - tempQnt.get(j));
 
-                //abominação. infelizmente tive que recorrer a isso.
+                //abominação. crime. infelizmente tive que recorrer a isso.
                 //isso é so um clone mas que altera a quantidade do produto pra ser a quantidade certa
                 newOrder.getProductsArray().set(j, new Product(productsBank.get(i).getNameProduct(), productsBank.get(i).getNameSellerProduct(), productsBank.get(i).getDescrptProduct(), 
                                                                productsBank.get(i).getPriceProduct(), tempQnt.get(j), productsBank.get(i).getIdProduct()));
