@@ -10,7 +10,6 @@ public class App{
 
         clientsManager = new ClientsManager();
         productsManager = new ProductsManager();
-
         do{
             if(!clientsManager.getIsLoggedIn()){
                 System.out.println("\n Bem vindo á Loja Livre!");

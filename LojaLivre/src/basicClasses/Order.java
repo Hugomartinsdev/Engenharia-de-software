@@ -12,6 +12,8 @@ public class Order{
         this.adressOrder = adressOrder;
     }
 
+    //Possicelmente terei que criar um novo construtor
+
     public ArrayList<Product> getProductsOrder(){
         return productsOrder;
     }

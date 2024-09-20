@@ -7,6 +7,7 @@ public class Client{
     private int ageClient;
     private ArrayList<Card> cardsClient;
     private ArrayList<Order> ordersClient;
+    //private ArrayList<Cart> cardCliet;
 
     public Client(String nameCient, int ageClient, String cpfCliente, String loginClient, String passClient){
         this.nameCient = nameCient;
@@ -16,6 +17,7 @@ public class Client{
         this.passClient = passClient;
         this.cardsClient = new ArrayList<>();
         this.ordersClient = new ArrayList<>();
+        //talvez criar uma array para o carrinho e apertar um botão para ccolocar no ordersClient
     }
 
     public String getNameCient(){
