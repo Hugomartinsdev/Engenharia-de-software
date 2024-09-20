@@ -2,13 +2,13 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import basicClasses.Product;
+import basicClasses.Manager;
 import basicClasses.Order;
 
-public class ProductsManager{
+public class ProductsManager extends Manager{
 
     private ArrayList<Product> productsBank;
-    private String input;
-    private int idGen = 0;
+    private int idGen = 1;
 
     public ProductsManager(){
         this.productsBank = new ArrayList<>();
@@ -22,10 +22,10 @@ public class ProductsManager{
         float newProductPrice = 0;
         int newProductAmount = 0;
 
-        int currentState = 0;
-        while(currentState != 5){
+        this.initiateMenu();
+        while(this.getCurrentStateMenu() != 5){
             //instruções pro usuário
-            switch(currentState){
+            switch(this.getCurrentStateMenu()){
                 case 0:
                     System.out.println("Qual é o nome do produto?");
                 break;
@@ -43,79 +43,58 @@ public class ProductsManager{
                 break;
             }
             System.out.println("(Digite < para voltar, X para cancelar)");
-    
-            this.input = sc.nextLine();
+
+            this.setInput(sc.nextLine());
 
             //input de sair ou voltar
-            if(this.input.equals("X")){
+            if(this.getInput().equals("X")){
                 return;
-            }else if(this.input.equals("<")){
-                currentState = (currentState == 0) ? 0 : currentState - 1;
+            }else if(this.getInput().equals("<")){
+                this.decreaseMenu();
                 continue;
             }
 
             //adquirição dos valores do produto
-            switch(currentState){
+            switch(this.getCurrentStateMenu()){
                 case 0:
                     //garantir que não é vazio
-                    newProductName = this.input;
-                    if(newProductName.equals("")){
-                        System.out.println("\n ERRO: Entrada vazia. \n");
+                    if(!this.checkIfNull(this.getInput())){
                         continue;
-                    }
-                    currentState++;
+                    }                       
+                    newProductName = this.getInput();
+                    this.increaseMenu();
                 break;
                 case 1:
                     //garantir que não é vazio
-                    if(this.input.equals("")){
-                        System.out.println("\n ERRO: Entrada vazia. \n");
+                    if(!this.checkIfNull(this.getInput())){
                         continue;
                     }
-                    newSellerName = this.input;
-                    currentState++;
+                    newSellerName = this.getInput();
+                    this.increaseMenu();
                 break;
                 case 2:
                     //garantir que não é vazio
-                    if(this.input.equals("")){
-                        System.out.println("\n ERRO: Entrada vazia. \n");
+                    if(!this.checkIfNull(this.getInput())){
                         continue;
                     }
-                    newProductDescrpt = this.input;
-                    currentState++;
+                    newProductDescrpt = this.getInput();
+                    this.increaseMenu();
                 break;
                 case 3:
                     //garantir que não é vazio, sempre ser float e maior que 0
-                    if(this.input.equals("")){
-                        System.out.println("\n ERRO: Entrada vazia. \n");
+                    if(!this.checkIfFloat(newProductDescrpt)){
                         continue;
                     }
-                    try{
-                        newProductPrice = Float.parseFloat(this.input);                        
-                        if(newProductPrice < 0){
-                            System.out.println("\n ERRO: Preço inválido. (Somente valores maiores que zero permitídos)\n");
-                            continue;
-                        }
-                        currentState++;
-                    }catch(Exception e){
-                        System.out.println("\n ERRO: Somente números e ponto permitidos. \n");
-                    }
+                    newProductPrice = Float.parseFloat(this.getInput());
+                    this.increaseMenu();
                 break;
                 case 4:
                     //garantir que não é vazio, sempre ser int e maior que 0
-                    if(this.input.equals("")){
-                        System.out.println("\n ERRO: Entrada vazia. \n");
+                    if(!this.checkIfInt(newProductDescrpt)){
                         continue;
                     }
-                    try{
-                        newProductAmount = Integer.parseInt(this.input);
-                        if(newProductAmount < 0){
-                            System.out.println("\n ERRO: Quantidade inválida. (Somente valores maiores que zero permitídos)\n");
-                            continue;
-                        }
-                        currentState++;
-                    }catch(Exception e){
-                        System.out.println("\n ERRO: Somente números permitídos. \n");
-                    }
+                    newProductAmount = Integer.parseInt(this.getInput());
+                    this.increaseMenu();
                 break;
             }
             
@@ -125,26 +104,26 @@ public class ProductsManager{
     }
     
     public void searchProduct(Scanner sc){
-        //garantir que não seja vazio
         while(true){
             System.out.println("Digite o nome do produto: ");
             System.out.println("(Digite X para cancelar)");
-            this.input = sc.nextLine();
-            if(this.input.equals("")){
-                System.out.println("\n ERRO: Entrada vazia. \n");
+            this.setInput(sc.nextLine());
+
+            if(this.getInput().equals("X")){
+                return;
+            }
+
+            //garantir que não seja vazio
+            if(!this.checkIfNull(this.getInput())){
                 continue;
             }
             break;
         }
 
-        if(this.input.equals("X")){
-            return;
-        }
-
         //checagem de nome
         boolean doesHaveProduct = false;
         for(Product product : productsBank){
-            if(product.getNameProduct().contains(this.input)){
+            if(product.getNameProduct().contains(this.getInput())){
                 System.out.println(product.toString());
                 doesHaveProduct = true;
             }
@@ -153,58 +132,54 @@ public class ProductsManager{
         if(!doesHaveProduct){
             System.out.println("Nenhum produto com esse nome encontrado \n");
         }
-
     }
 
     public void deleteProduct(Scanner sc){
-        //garantir que sempre seja int e que não seja vazio
         while(true){
             System.out.println("Digite o ID do produto: ");
             System.out.println("(Digite X para cancelar)");
-            this.input = sc.nextLine();
-            if(this.input.equals("X")){
+            this.setInput(sc.nextLine());
+            
+            if(this.getInput().equals("X")){
                 return;
             }
-            try{
-                if(Integer.parseInt(this.input) < 0){
-                    System.out.println("\n ERRO: ID inválido. \n");
-                    continue;
-                }
-            }catch(Exception e){
-                System.out.println("\n ERRO: Entrada inválida. \n");
-                continue;
-            }
-
-            //checagem de ID
-            for(Product product : productsBank){
-                if(product.getIdProduct() == Integer.parseInt(this.input)){
-                    productsBank.remove(product);
-                    System.out.println("Produto removido \n");
-                    return;
-                }
-            }
-            System.out.println("\n ERRO: Nenhum produto com esse ID encontrado. \n");
-        }
-    }
-
-    public Order createOrder(Scanner sc){        
-        //garantir que não seja vazio
-        while(true){
-            System.out.println("Digite o endereço a ser entregue: ");
-            System.out.println("(Digite X para cancelar)");
-            this.input = sc.nextLine();
-            if(this.input.equals("")){
-                System.out.println("\n ERRO: Entrada vazia. \n");
+            
+            //garantir que não é vazio, sempre see int e maior que 0
+            if(this.checkIfInt(getInput())){
                 continue;
             }
             break;
         }
 
-        if(this.input.equals("X")){
-            return null;
+        //checagem de ID
+        for(Product product : productsBank){
+            if(product.getIdProduct() == Integer.parseInt(this.getInput())){
+                productsBank.remove(product);
+                System.out.println("Produto removido \n");
+                return;
+            }
+        }
+        System.out.println("\n ERRO: Nenhum produto com esse ID encontrado. \n");
+    }
+
+    public Order createOrder(Scanner sc){        
+        while(true){
+            System.out.println("Digite o endereço a ser entregue: ");
+            System.out.println("(Digite X para cancelar)");
+            this.setInput(sc.nextLine());
+
+            if(this.getInput().equals("X")){
+                return null;
+            }
+
+            //garantir que não seja vazio
+            if(!this.checkIfNull(this.getInput())){
+                continue;
+            }
+            break;
         }
 
-        String newOrderAdress = this.input;
+        String newOrderAdress = this.getInput();
         Order newOrder = new Order(newOrderAdress);
         boolean doesHaveProduct;
         ArrayList<Integer> tempQnt = new ArrayList<>();
@@ -213,47 +188,39 @@ public class ProductsManager{
         while(true){
             System.out.println("Digite o ID do produto a ser comprado: ");
             System.out.println("(Digite F para fechar o pedido, X para cancelar)");
-            this.input = sc.nextLine();
+            this.setInput(sc.nextLine());
 
-            if(this.input.equals("F")){
+            if(this.getInput().equals("F")){
                 break;
             }
-            if(this.input.equals("X")){
+            if(this.getInput().equals("X")){
                 return null;
             }
-            try{
-                if(Integer.parseInt(this.input) < 0){
-                    System.out.println("\n ERRO: ID inválido. \n");
-                    continue;
-                }
-            }catch(Exception e){
-                System.out.println("\n ERRO: Entrada inválida. \n");
+
+            //garantir que não é vazio, sempre ser int e maior que 0
+            if(!checkIfInt(this.getInput())){
                 continue;
             }
 
             doesHaveProduct = false;
             for(Product product : productsBank){
-                if(product.getIdProduct() == Integer.parseInt(this.input)){
+                if(product.getIdProduct() == Integer.parseInt(this.getInput())){
                     while(true){
                         System.out.println("Digite a quantidade: ");
                         System.out.println("(Quantidade disponível: " + product.getQntProduct() + ")");
-                        this.input = sc.nextLine();
-                        try{
-                            if(Integer.parseInt(this.input) < 1){
-                                System.out.println("\n ERRO: Quantidade inválida. \n");
-                                continue;
-                            }
-                            if(product.getQntProduct() < Integer.parseInt(this.input)){
-                                System.out.println("\n ERRO: Quantidade indisponível. \n");
-                                continue;
-                            }
-                        }catch(Exception e){
-                            System.out.println("\n ERRO: Entrada inválida. \n");
+                        this.setInput(sc.nextLine());
+
+                        //garantir que não é vazio, sempre ser int, maior que 0 e que o produto possua essa quantidade                   
+                        if(!this.checkIfInt(this.getInput())){
+                            continue;
+                        }
+                        if(product.getQntProduct() < Integer.parseInt(this.getInput())){
+                            System.out.println("\n ERRO: Quantidade indisponível. \n");
                             continue;
                         }
                         break;
                     }
-                    tempQnt.add(Integer.parseInt(this.input));
+                    tempQnt.add(Integer.parseInt(this.getInput()));
                     newOrder.addProductsOrder(product);
                     doesHaveProduct = true;
                 }

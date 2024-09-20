@@ -5,14 +5,14 @@ import java.util.Scanner;
 
 import basicClasses.Card;
 import basicClasses.Client;
+import basicClasses.Manager;
 import basicClasses.Order;
 
-public class ClientsManager{
+public class ClientsManager extends Manager{
 
     private ArrayList<Client> clientsBank;
     private boolean isLoggedIn;
     private Client loggedInClient;
-    private String input;
 
     public ClientsManager(){
         this.clientsBank = new ArrayList<>();
@@ -28,10 +28,10 @@ public class ClientsManager{
         String newClientLogin = "";
         String newClientPass = "";
 
-        int currentState = 0;
-        while(currentState != 5){
+        this.initiateMenu();
+        while(this.getCurrentStateMenu() != 5){
             //instruções para o usuário
-            switch(currentState){
+            switch(this.getCurrentStateMenu()){
                 case 0:
                     System.out.println("Qual é o seu nome?");
                 break;
@@ -50,89 +50,73 @@ public class ClientsManager{
             }
             System.out.println("(Digite < para voltar, X para cancelar)");
 
-            this.input = sc.nextLine();
+            this.setInput(sc.nextLine());
 
             //input de sair ou voltar
-            if(this.input.equals("X")){
+            if(this.getInput().equals("X")){
                 return;
-            }else if(this.input.equals("<")){
-                currentState = (currentState == 0) ? 0 : currentState - 1;
+            }else if(this.getInput().equals("<")){
+                this.decreaseMenu();
                 continue;
             }
 
             //adquirição dos dados do cliente
-            switch(currentState){
+            switch(this.getCurrentStateMenu()){
                 case 0:
                     //garantir que não é vazio
-                    if(this.input.equals("")){
-                        System.out.println("\n ERRO: Entrada vazia. \n");
+                    if(!this.checkIfNull(this.getInput())){
                         continue;
                     }
-                    newClientName = this.input;
-                    currentState++;
+                    newClientName = this.getInput();
+                    increaseMenu();;
                 break;
                 case 1:
-                    //garantir que não é vazio e sempre ser int
-                    if(this.input.equals("")){
-                        System.out.println("\n ERRO: Entrada vazia. \n");
+                    //garantir que não é vazio, sempre ser int, maior que 0 e menor que 99
+                    if(!this.checkIfInt(this.getInput())){
                         continue;
                     }
-                    try{
-                        newClientAge = Integer.parseInt(this.input);
-                        if(newClientAge > 99){
-                            System.out.println("\n ERRO: Idade inválida. (Máximo 99 anos)\n");
-                            continue;
-                        }
-                        currentState++;
-                    }catch(Exception e){
-                        System.out.println("\n ERRO: Somente números permitidos. \n");
+                    newClientAge = Integer.parseInt(this.getInput());
+                    if(newClientAge > 99){
+                        System.out.println("\n ERRO: Idade inválida. (Máximo 99 anos) \n");
+                        continue;
                     }
+                    this.increaseMenu();
                 break;
                 case 2:
                     //garantir que não é vazio, sempre possuir somente números, ser tamanho 11 e não repetir
-                    if(this.input.equals("")){
-                        System.out.println("\n ERRO: Entrada vazia. \n");
+                    if(!this.checkIfLong(this.getInput())){
                         continue;
                     }
-                    newClientCpf = this.input;
-                    try{
-                        Long.parseLong(newClientCpf);
-                        if(newClientCpf.length() != 11){
-                            System.out.println("\n ERRO: CPF de tamanho inválido. \n");
+                    if(!this.checkSize(this.getInput(), 11)){
+                        continue;
+                    }
+                    newClientCpf = this.getInput();
+                    for(Client client : this.clientsBank){
+                        if(client.getCpfClient().equals(newClientCpf)){
+                            System.out.println("\n ERRO: Cliente com esse CPF já existe. \n");
                             continue;
                         }
-                        for(Client client : this.clientsBank){
-                            if(client.getCpfClient().equals(newClientCpf)){
-                                System.out.println("\n ERRO: Cliente com esse CPF já existe. \n");
-                                continue;
-                            }
-                        }
-                        currentState++;
-                    }catch(Exception e){
-                        System.out.println("\n ERRO: Somente números permitidos. \n");
                     }
+                    this.increaseMenu();
                 break;
                 case 3:
                     //garantir que não é vazio
-                    if(this.input.equals("")){
-                        System.out.println("\n ERRO: Entrada vazia. \n");
+                    if(!this.checkIfNull(this.getInput())){
                         continue;
                     }
-                    newClientLogin = this.input;
-                    currentState++;
+                    newClientLogin = this.getInput();
+                    this.increaseMenu();
                 break;
                 case 4:
                     //garantir que não é vazio e seja de tamanho mínimo 8
-                    if(this.input.equals("")){
-                        System.out.println("\n ERRO: Entrada vazia. \n");
+                    if(!this.checkIfNull(this.getInput())){
                         continue;
                     }
-                    if(this.input.length() < 8){
-                        System.out.println("\n ERRO: Senha muito pequena \n");
+                    if(!this.checkSize(this.getInput(), 8)){
                         continue;
                     }
-                    newClientPass = this.input;
-                    currentState++;
+                    newClientPass = this.getInput();
+                    this.increaseMenu();
                 break;
             }
         }
@@ -148,10 +132,10 @@ public class ClientsManager{
         String newCardCvv = "";
         String newCardExpDate = "";
 
-        int currentState = 0;
-        while(currentState != 5){
+        this.initiateMenu();
+        while(this.getCurrentStateMenu() != 5){
             //instruções para o usuário
-            switch(currentState){
+            switch(this.getCurrentStateMenu()){
                 case 0:
                     System.out.println("Seu cartão é credito ou debito?");
                     System.out.println("C - Credito");
@@ -173,88 +157,85 @@ public class ClientsManager{
 
             System.out.println("(Digite < para voltar, X para cancelar)");
 
-            this.input = sc.nextLine();
+            this.setInput(sc.nextLine());
 
             //input de sair ou voltar
-            if(this.input.equals("X")){
+            if(this.getInput().equals("X")){
                 return;
-            }else if(this.input.equals("<")){
-                currentState = (currentState == 0) ? 0 : currentState - 1;
+            }else if(this.getInput().equals("<")){
+                this.decreaseMenu();
                 continue;
             }
 
             //adquirição dos dados do cartão
-            switch(currentState){
+            switch(this.getCurrentStateMenu()){
                 case 0:
                     //garantir que não seja vazio e seja C ou D
-                    if(this.input.equals("")){
-                        System.out.println("\n ERRO: Entrada vazia. \n");
+                    if(!this.checkIfNull(this.getInput())){
                         continue;
                     }
-                    newCardType = this.input;
+                    newCardType = this.getInput();
                     if(!(newCardType.equals("C") || newCardType.equals("D"))){
                         System.out.println("\n ERRO: Entrada inválida. (Apenas C e D)\n");
                         continue;
                     }
-                    currentState++;
+                    this.increaseMenu();
                 break;
                 case 1:
                     //garantir que não é vazio
-                    if(this.input.equals("")){
-                        System.out.println("\n ERRO: Entrada vazia. \n");
+                    if(!this.checkIfNull(this.getInput())){
                         continue;
-                    }  
-                    newCardName = this.input;
-                    currentState++;
+                    } 
+                    newCardName = this.getInput();
+                    this.increaseMenu();
                 break;
                 case 2:
-                    //garantir que não seja vazio, seja somente número, 
+                    //garantir que não seja vazio, sempre possuir somente números, 
                     //o número seja sempre tamanho 16/19 e que começe com 3-6
-                    if(this.input.equals("")){
-                        System.out.println("\n ERRO: Entrada vazia. \n");
+                    if(!this.checkIfLong(this.getInput())){
                         continue;
                     }
-                    newCardNumber = this.input;
-                    try{
-                        Long.parseLong(newCardNumber);
-                        if(newCardNumber.length() != 16 && newCardNumber.length() != 19){
-                            System.out.println("\n ERRO: Quantidade de dígitos inválida. \n");
-                            continue;
-                        }
-                        if(newCardNumber.charAt(0) < 51 || newCardNumber.charAt(0) > 54){
-                            System.out.println("\n ERRO: Número de cartão inválido. \n");
-                            continue;
-                        }
-                        currentState++;
-                    }catch(Exception e){
-                        System.out.println("\n ERRO: Somente números permitidos. \n");
+                    if(!(this.checkSize(this.getInput(), 16) || this.checkSize(this.getInput(), 19))){
+                        //pra apagar a duplicação de erro
+                        System.out.print(String.format("\033[%dA", 3));
+                        System.out.print("\033[2K");
+                        continue;
                     }
+                    //pra apagar o erro
+                    System.out.print(String.format("\033[%dA", 3));
+                    System.out.print("\033[2K");
+                    newCardNumber = this.getInput();
+                    if(newCardNumber.charAt(0) < 51 || newCardNumber.charAt(0) > 54){
+                        System.out.println("\n ERRO: Número de cartão inválido. \n");
+                        continue;
+                    }
+                    this.increaseMenu();
                 break;
                 case 3:
                     //garantir que não seja vazio, possua somente números e que seja sempre tamanho 3
-                    if(this.input.equals("")){
+                    if(this.getInput().equals("")){
                         System.out.println("\n ERRO: Entrada vazia. \n");
                         continue;
                     }
-                    newCardCvv = this.input;
+                    newCardCvv = this.getInput();
                     try{
                         Integer.parseInt(newCardCvv);
                         if(newCardCvv.length() != 3){
                             System.out.println("\n ERRO: Quantidade de dígitos inválida. \n");
                             continue;
                         }
-                        currentState++;
+                        this.increaseMenu();
                     }catch(Exception e){
                         System.out.println("\n ERRO: Somente números permitidos. \n");
                     }
                 break;
                 case 4:
                     //garantir que não seja vazio, a data seja sempre padronizada e que nao esteja expirada
-                    if(this.input.equals("")){
-                        System.out.println("\n ERRO: Entrada vazia. \n");
+                    if(!this.checkIfNull(this.getInput())){
                         continue;
                     }
-                    newCardExpDate = "01/" + this.input;
+                    newCardExpDate = "01/" + this.getInput();
+
                     //localdate.parse() = formatar pra mm/aa, datimeformatter.ofpattern() = a estrutura da formatacao
                     //localdate.parse().isbefore() = ver se a data formatada é antes da data checada
                     //localdate.now() = data de hoje
@@ -267,7 +248,7 @@ public class ClientsManager{
                         System.out.println("\n ERRO: Formatação inválida. (Apenas mm/aa permitido) \n");
                         continue;
                     }
-                    currentState++;
+                    this.increaseMenu();
                 break;
             }
         }
@@ -276,42 +257,42 @@ public class ClientsManager{
     }
 
     public void logInClient(Scanner sc){
-        if(this.clientsBank.size() == 0){
-            System.out.println("Nenhuma conta criada. É necessário criar uma conta antes de logar.");
-            this.createClient(sc);
-            return;
-        }
 
         String tempLogin = "";
         String tempPass = "";
 
-        int currentState = 0;
-        while(currentState != 2){
-            switch(currentState){
+        this.initiateMenu();
+        while(this.getCurrentStateMenu() != 2){
+            switch(this.getCurrentStateMenu()){
                 case 0:
                     System.out.println("Login: ");
                 break;
                 case 1:
                     System.out.println("Senha: ");
-                    System.out.println("(Digite < para voltar)");
                 break;
             }
-            this.input = sc.nextLine();
-            if(this.input.equals("")){
-                System.out.println("\n ERRO: Entrada vazia. \n");
+            System.out.println("(Digite < para voltar, X para cancelar)");
+            this.setInput(sc.nextLine());
+
+            if(this.getInput().equals("X")){
+                return;
+            }else if(this.getInput().equals("<")){
+                this.decreaseMenu();
                 continue;
             }
-            switch(currentState){
+
+            //garantir que não seja vazio
+            if(!this.checkIfNull(this.getInput())){
+                continue;
+            }
+
+            switch(this.getCurrentStateMenu()){
                 case 0:
-                    tempLogin = this.input;
-                    currentState++;
+                    tempLogin = this.getInput();
+                    this.increaseMenu();
                 break;
                 case 1:
-                    if(this.input.equals("<")){
-                        currentState--;
-                        continue;
-                    }
-                    tempPass = this.input;
+                    tempPass = this.getInput();
                     for(Client client : clientsBank){
                         if(client.getLoginClient().equals(tempLogin) && client.getPassClient().equals(tempPass)){
                             this.loggedInClient = client;
@@ -321,13 +302,12 @@ public class ClientsManager{
                         }
                     }
                     System.out.println("\n ERRO: login ou senha incorretos \n");
-                    currentState--;
+                    this.decreaseMenu();
                 break;
             }
         }
     }
     
-
     public void addOrderClient(Order newOrder){
         if(newOrder.equals(null)){
             return;

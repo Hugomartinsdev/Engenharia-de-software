@@ -13,7 +13,18 @@ public class App{
 
         do{
             if(!clientsManager.getIsLoggedIn()){
-                clientsManager.logInClient(sc);
+                System.out.println("\n Bem vindo á Loja Livre!");
+                System.out.println("Quer fazer login ou cadastrar conta?");
+                System.out.println("(L: login | C: cadastro)");
+                String tempInput = sc.nextLine();
+
+                if(tempInput.equals("L")){
+                    clientsManager.logInClient(sc);
+                }else if(tempInput.equals("C")){
+                    clientsManager.createClient(sc);
+                }else{
+                    System.out.println("\n ERRO: Entrada inválida. (Apenas L e C) \n");
+                }
                 continue;
             }
 
@@ -21,10 +32,6 @@ public class App{
             menuInput = sc.nextLine().charAt(0);
 
             switch(menuInput){
-                case 'A':
-                    clientsManager.createClient(sc);
-                break;
-
                 case 'C':
                     clientsManager.createCard(sc);
                 break;
@@ -74,7 +81,6 @@ public class App{
     public static void menu(){
 
         System.out.println("-MENU-");
-        System.out.println("A: criar conta");
         System.out.println("C: criar cartão e adicionar a conta");
         System.out.println("D: ver dados da conta");
         System.out.println("P: criar produto");
