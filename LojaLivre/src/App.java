@@ -41,7 +41,7 @@ public class App{
                 break;
 
                 case 'P':
-                    productsManager.createProduct(sc);
+                    productsManager.createProduct(sc, clientsManager.getLoggedInClientName());
                 break;
 
                 case 'S':

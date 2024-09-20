@@ -14,31 +14,27 @@ public class ProductsManager extends Manager{
         this.productsBank = new ArrayList<>();
     }
 
-    public void createProduct(Scanner sc){
+    public void createProduct(Scanner sc, String sellerName){
         //var novas para a criação de produto
         String newProductName = "";
-        String newSellerName = "";
         String newProductDescrpt = "";
         float newProductPrice = 0;
         int newProductAmount = 0;
 
         this.initiateMenu();
-        while(this.getCurrentStateMenu() != 5){
+        while(this.getCurrentStateMenu() != 4){
             //instruções pro usuário
             switch(this.getCurrentStateMenu()){
                 case 0:
                     System.out.println("Qual é o nome do produto?");
                 break;
                 case 1:
-                    System.out.println("Nome do vendedor?"); 
-                break;
-                case 2:
                     System.out.println("Descrição do produto?");
                 break;
-                case 3:
+                case 2:
                     System.out.println("Preço do produto? (R$, divida o centavo com ponto)");
                 break;
-                case 4:
+                case 3:
                     System.out.println("Quantidade do produto?");
                 break;
             }
@@ -69,28 +65,20 @@ public class ProductsManager extends Manager{
                     if(!this.checkIfNull(this.getInput())){
                         continue;
                     }
-                    newSellerName = this.getInput();
-                    this.increaseMenu();
-                break;
-                case 2:
-                    //garantir que não é vazio
-                    if(!this.checkIfNull(this.getInput())){
-                        continue;
-                    }
                     newProductDescrpt = this.getInput();
                     this.increaseMenu();
                 break;
-                case 3:
+                case 2:
                     //garantir que não é vazio, sempre ser float e maior que 0
-                    if(!this.checkIfFloat(newProductDescrpt)){
+                    if(!this.checkIfFloat(this.getInput())){
                         continue;
                     }
                     newProductPrice = Float.parseFloat(this.getInput());
                     this.increaseMenu();
                 break;
-                case 4:
+                case 3:
                     //garantir que não é vazio, sempre ser int e maior que 0
-                    if(!this.checkIfInt(newProductDescrpt)){
+                    if(!this.checkIfInt(this.getInput())){
                         continue;
                     }
                     newProductAmount = Integer.parseInt(this.getInput());
@@ -99,7 +87,7 @@ public class ProductsManager extends Manager{
             }
             
         }
-        this.productsBank.add(new Product(newProductName, newSellerName, newProductDescrpt, newProductPrice, newProductAmount, idGen++));
+        this.productsBank.add(new Product(newProductName, sellerName, newProductDescrpt, newProductPrice, newProductAmount, idGen++));
         System.out.println("Produto adicionado com sucesso! \n");
     }
     

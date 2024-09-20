@@ -72,7 +72,7 @@ public class Manager{
     public boolean checkIfFloat(String input){
         try{
             Float.parseFloat(input);
-        }catch (Exception e){
+        }catch(Exception e){
             System.out.println("\n ERRO: Somente números e ponto permitídos. \n");
             return false;
         }

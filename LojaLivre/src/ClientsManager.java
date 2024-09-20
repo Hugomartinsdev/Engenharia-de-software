@@ -7,6 +7,8 @@ import basicClasses.Card;
 import basicClasses.Client;
 import basicClasses.Manager;
 import basicClasses.Order;
+import basicClasses.Product;
+import basicClasses.Seller;
 
 public class ClientsManager extends Manager{
 
@@ -201,9 +203,6 @@ public class ClientsManager extends Manager{
                         System.out.print("\033[2K");
                         continue;
                     }
-                    //pra apagar o erro
-                    System.out.print(String.format("\033[%dA", 3));
-                    System.out.print("\033[2K");
                     newCardNumber = this.getInput();
                     if(newCardNumber.charAt(0) < 51 || newCardNumber.charAt(0) > 54){
                         System.out.println("\n ERRO: Número de cartão inválido. \n");
@@ -256,8 +255,21 @@ public class ClientsManager extends Manager{
         System.out.println("Cartão cadastrado com sucesso! \n");
     }
 
-    public void logInClient(Scanner sc){
+    public void addProductToSeller(Product newProduct){
+        if(this.loggedInClient.getClass() == Client.class){
+            int tempId = this.clientsBank.indexOf(loggedInClient);
+            this.clientsBank.remove(loggedInClient);
+            Seller newSeller = new Seller(this.loggedInClient.getNameCient(), this.loggedInClient.getAgeClient(),
+            this.loggedInClient.getCpfClient(), this.loggedInClient.getLoginClient(), this.loggedInClient.getPassClient());
+            this.clientsBank.add(tempId, newSeller);
+            this.loggedInClient = newSeller;
+        }
 
+        ((Seller) this.loggedInClient).addProducts(newProduct);
+
+    }
+
+    public void logInClient(Scanner sc){
         String tempLogin = "";
         String tempPass = "";
 
@@ -308,6 +320,11 @@ public class ClientsManager extends Manager{
         }
     }
     
+    public void logOut(){
+        this.loggedInClient = null;
+        this.isLoggedIn = false;
+    }
+
     public void addOrderClient(Order newOrder){
         if(newOrder.equals(null)){
             return;
@@ -329,8 +346,9 @@ public class ClientsManager extends Manager{
         System.out.println(this.loggedInClient.toString());
     }
 
-    public void logOut(){
-        this.loggedInClient = null;
+    public String getLoggedInClientName(){
+        return this.loggedInClient.getNameCient();
     }
+
     
 }

@@ -8,10 +8,10 @@ public class Client{
     private ArrayList<Card> cardsClient;
     private ArrayList<Order> ordersClient;
 
-    public Client(String nameCient, int ageClient, String cpfCliente, String loginClient, String passClient){
+    public Client(String nameCient, int ageClient, String cpfClient, String loginClient, String passClient){
         this.nameCient = nameCient;
         this.ageClient = ageClient;
-        this.cpfClient = cpfCliente;
+        this.cpfClient = cpfClient;
         this.loginClient = loginClient;
         this.passClient = passClient;
         this.cardsClient = new ArrayList<>();
