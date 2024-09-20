@@ -5,15 +5,18 @@ import java.util.Scanner;
 
 import basicClasses.Card;
 import basicClasses.Client;
+import basicClasses.Order;
 
 public class ClientsManager{
 
     private ArrayList<Client> clientsBank;
+    private boolean isLoggedIn;
     private Client loggedInClient;
     private String input;
 
     public ClientsManager(){
         this.clientsBank = new ArrayList<>();
+        this.isLoggedIn = false;
         this.loggedInClient = null;
     }
 
@@ -26,7 +29,7 @@ public class ClientsManager{
         String newClientPass = "";
 
         int currentState = 0;
-        while(currentState != 3){
+        while(currentState != 5){
             //instruções para o usuário
             switch(currentState){
                 case 0:
@@ -124,10 +127,11 @@ public class ClientsManager{
                         System.out.println("\n ERRO: Entrada vazia. \n");
                         continue;
                     }
-                    if(this.input.length() < 10){
-                        System.out.println("\n ERRO: Poucos caracteres \n");
+                    if(this.input.length() < 8){
+                        System.out.println("\n ERRO: Senha muito pequena \n");
+                        continue;
                     }
-                    newClientLogin = this.input;
+                    newClientPass = this.input;
                     currentState++;
                 break;
             }
@@ -143,10 +147,9 @@ public class ClientsManager{
         String newCardNumber = "";
         String newCardCvv = "";
         String newCardExpDate = "";
-        int newCardOwnerId = 0;
 
         int currentState = 0;
-        while(currentState != 6){
+        while(currentState != 5){
             //instruções para o usuário
             switch(currentState){
                 case 0:
@@ -165,9 +168,6 @@ public class ClientsManager{
                 break;
                 case 4:
                     System.out.println("Data de validade? (mm/aa)");
-                break;
-                case 5:
-                    System.out.println("Digite o CPF do cliente a receber este cartão: ");
                 break;
             }
 
@@ -269,37 +269,19 @@ public class ClientsManager{
                     }
                     currentState++;
                 break;
-                case 5:
-                    //garantir que não é vazio, sempre possuir somente números, ser tamanho 11 e não repetir
-                    if(this.input.equals("")){
-                        System.out.println("\n ERRO: Entrada vazia. \n");
-                        continue;
-                    }
-                    try{
-                        Long.parseLong(this.input);
-                        if(this.input.length() != 11){
-                            System.out.println("\n ERRO: CPF de tamanho inválido. \n");
-                            continue;
-                        }
-                        for(Client client : this.clientsBank){
-                            if(client.getCpfClient().equals(this.input)){
-                                newCardOwnerId = this.clientsBank.indexOf(client);
-                                currentState++;
-                                break;
-                            }
-                        }
-                        System.out.println("\n ERRO: Nenhum cliente com este CPF encontrado \n");
-                    }catch(Exception e){
-                        System.out.println("\n ERRO: Somente números permitidos. \n");
-                    }
-                break;
             }
         }
-        this.clientsBank.get(newCardOwnerId).addCards(new Card(newCardName, newCardNumber, newCardCvv, newCardExpDate, (newCardType.equals("C") ? true  : false)));
+        this.loggedInClient.addCards(new Card(newCardName, newCardNumber, newCardCvv, newCardExpDate, (newCardType.equals("C") ? true  : false)));
         System.out.println("Cartão cadastrado com sucesso! \n");
     }
 
     public void logInClient(Scanner sc){
+        if(this.clientsBank.size() == 0){
+            System.out.println("Nenhuma conta criada. É necessário criar uma conta antes de logar.");
+            this.createClient(sc);
+            return;
+        }
+
         String tempLogin = "";
         String tempPass = "";
 
@@ -333,19 +315,42 @@ public class ClientsManager{
                     for(Client client : clientsBank){
                         if(client.getLoginClient().equals(tempLogin) && client.getPassClient().equals(tempPass)){
                             this.loggedInClient = client;
+                            isLoggedIn = true;
                             System.out.println("Login confirmado \n");
                             return;
                         }
                     }
-                    currentState++;
+                    System.out.println("\n ERRO: login ou senha incorretos \n");
+                    currentState--;
                 break;
             }
-
         }
+    }
+    
+
+    public void addOrderClient(Order newOrder){
+        if(newOrder.equals(null)){
+            return;
+        }
+        this.loggedInClient.addOrders(newOrder);
+    }
+
+    public void showAllLoggedInOrders(){
+        for(Order order : this.loggedInClient.getOrdersClient()){
+            System.out.println(order.toString() + "\n");
+        }
+    }
+
+    public boolean getIsLoggedIn(){
+        return this.isLoggedIn;
     }
 
     public void getLoggedInClientInfo(){
         System.out.println(this.loggedInClient.toString());
+    }
+
+    public void logOut(){
+        this.loggedInClient = null;
     }
     
 }

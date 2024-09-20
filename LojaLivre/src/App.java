@@ -6,12 +6,17 @@ public class App{
     static ProductsManager productsManager;
     public static void main(String[] args){
         sc = new Scanner(System.in);
-        char menuInput;
+        char menuInput = '.';
 
         clientsManager = new ClientsManager();
         productsManager = new ProductsManager();
 
         do{
+            if(!clientsManager.getIsLoggedIn()){
+                clientsManager.logInClient(sc);
+                continue;
+            }
+
             menu();
             menuInput = sc.nextLine().charAt(0);
 
@@ -25,7 +30,7 @@ public class App{
                 break;
 
                 case 'D':
-                    System.out.println(tempClient.toString());
+                    clientsManager.getLoggedInClientInfo();
                 break;
 
                 case 'P':
@@ -41,7 +46,7 @@ public class App{
                 break;
 
                 case 'O':
-                    productsManager.createOrder(sc);
+                    clientsManager.addOrderClient(productsManager.createOrder(sc));
                 break;
 
                 case 'X':
@@ -49,7 +54,11 @@ public class App{
                 break;
 
                 case 'V':
-                    System.out.println(productsManager.tempOrder.toString());
+                    clientsManager.showAllLoggedInOrders();
+                break;
+
+                case 'L':
+                    clientsManager.logOut();
                 break;
             
                 default:
@@ -72,7 +81,8 @@ public class App{
         System.out.println("S: procurar produtos");
         System.out.println("E: apagar produto");
         System.out.println("O: criar pedido");
-        System.out.println("V: ver dados do pedido");
+        System.out.println("V: ver pedidos da conta");
+        System.out.println("L: deslogar da conta");
         System.out.println("X: sair");
         System.out.println("Digite seu comando:");
 

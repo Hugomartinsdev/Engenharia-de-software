@@ -9,7 +9,6 @@ public class ProductsManager{
     private ArrayList<Product> productsBank;
     private String input;
     private int idGen = 0;
-    Order tempOrder;
 
     public ProductsManager(){
         this.productsBank = new ArrayList<>();
@@ -188,7 +187,7 @@ public class ProductsManager{
         }
     }
 
-    public void createOrder(Scanner sc){        
+    public Order createOrder(Scanner sc){        
         //garantir que não seja vazio
         while(true){
             System.out.println("Digite o endereço a ser entregue: ");
@@ -202,7 +201,7 @@ public class ProductsManager{
         }
 
         if(this.input.equals("X")){
-            return;
+            return null;
         }
 
         String newOrderAdress = this.input;
@@ -220,7 +219,7 @@ public class ProductsManager{
                 break;
             }
             if(this.input.equals("X")){
-                return;
+                return null;
             }
             try{
                 if(Integer.parseInt(this.input) < 0){
@@ -285,8 +284,8 @@ public class ProductsManager{
                 break;
             }
         }
-        tempOrder = newOrder;
         System.out.println("Pedido criado!");
+        return newOrder;
     }
 
     public void showAllProducts(){
@@ -294,6 +293,5 @@ public class ProductsManager{
             System.out.println(product.toString() + "\n");
         }
     }
-
     
 }
