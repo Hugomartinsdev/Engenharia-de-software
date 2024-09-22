@@ -6,9 +6,11 @@ public class Order{
 
     private ArrayList<Product> productsOrder;
     private String adressOrder;
+    private ArrayList<Order> teste;
 
     public Order(String adressOrder){
         this.productsOrder = new ArrayList<>();
+        this.teste = new ArrayList<>();
         this.adressOrder = adressOrder;
     }
 
@@ -21,6 +23,13 @@ public class Order{
     public void addProductsOrder(Product newProduct){
         this.productsOrder.add(newProduct);
     }
+
+    public void addCartToOrder(Order Item){
+        teste.add(Item);
+    }
+
+  
+    
     public ArrayList<Product> getProductsArray(){
         return this.productsOrder;
     }
@@ -50,7 +59,5 @@ public class Order{
     public String toString(){
         return "Pedido: \n Produtos: " + this.getAllProducts() + "\n Custo total: " + this.getTotalPrice() + "\n Endereço de entrega: " + this.adressOrder + "\n";
     }
-
-    
     
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import basicClasses.Card;
+import basicClasses.Cart;
 import basicClasses.Client;
 import basicClasses.Manager;
 import basicClasses.Order;
@@ -332,10 +333,34 @@ public class ClientsManager extends Manager{
         this.loggedInClient.addOrders(newOrder);
     }
 
+    public void addProductsCart(Cart newProduct){//teste para adicionar o produto no carrinho
+        if(newProduct.equals(null)){
+            return;
+        }
+        this.loggedInClient.addCart(newProduct);
+    }
+
+    public void addCartToOrder(Cart newOrder){//para adicionar o carrinho no pedido
+        if(newOrder.equals(null)){
+            return;
+        }
+        this.loggedInClient.addCartToOrder(newOrder);
+    }
+
     public void showAllLoggedInOrders(){
         for(Order order : this.loggedInClient.getOrdersClient()){
             System.out.println(order.toString() + "\n");
         }
+    }
+
+    public void showAllCartItensLoggedInOrders(){
+        for(Cart cart : this.loggedInClient.getCartClient()){
+            System.out.println(cart.toString() + "\n");
+        }
+    }
+
+    public void showOrder(){
+        this.loggedInClient.showAllProducts();
     }
 
     public boolean getIsLoggedIn(){

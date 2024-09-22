@@ -7,6 +7,7 @@ public class Client{
     private int ageClient;
     private ArrayList<Card> cardsClient;
     private ArrayList<Order> ordersClient;
+    private ArrayList<Cart> cartClient;//adicionei esse array para o carrinho do cliente
 
     public Client(String nameCient, int ageClient, String cpfClient, String loginClient, String passClient){
         this.nameCient = nameCient;
@@ -16,6 +17,7 @@ public class Client{
         this.passClient = passClient;
         this.cardsClient = new ArrayList<>();
         this.ordersClient = new ArrayList<>();
+        this.cartClient= new ArrayList<>();//e aqui a criacão dele no construtor
     }
 
     public String getNameCient(){
@@ -62,6 +64,7 @@ public class Client{
     public void addCards(Card newCard){
         this.cardsClient.add(newCard);
     }
+
     public String getAllCards(){
         String output = "";
 
@@ -97,9 +100,40 @@ public class Client{
         return output;
     }
 
+    public ArrayList<Cart> getCartClient() {
+        return cartClient;
+    }
+
+    public void addCart(Cart newCart){
+        cartClient.add(newCart);
+    }
+
+    public String getAllItensToCart(){//ver todos os produtos no carrinho
+        String output="";
+
+        if(cartClient.size() == 0){
+            return "Nenhum produto adicionado ao carrinho";
+        }
+        for(Cart cart: cartClient){
+            output += cart.toString()+ " ";
+        }
+        return output;
+    }
+
+    public void addCartToOrder(Cart newCart){//criação do metodo de colocar o carrinho no pedido
+        this.cartClient.add(newCart);
+    }
+    
+
     @Override
     public String toString(){
         return nameCient + ": \n Idade: " + ageClient + "\n Cpf: " + cpfClient + "\n Cartões: \n " + 
                this.getAllCards() + "\n Pedidos: \n " + this.getAllOrders();
+    }
+
+    public void showAllProducts() {
+        for (Order order : ordersClient) {
+            System.out.println(order.toString()+"\n");
+           }
     }
 }

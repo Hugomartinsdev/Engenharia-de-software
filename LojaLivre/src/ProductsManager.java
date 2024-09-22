@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import basicClasses.Product;
+import basicClasses.Cart;
 import basicClasses.Manager;
 import basicClasses.Order;
 
@@ -150,23 +151,8 @@ public class ProductsManager extends Manager{
         System.out.println("\n ERRO: Nenhum produto com esse ID encontrado. \n");
     }
 
-    public Order createOrder(Scanner sc){        
-        while(true){
-            System.out.println("Digite o endereço a ser entregue: ");
-            System.out.println("(Digite X para cancelar)");
-            this.setInput(sc.nextLine());
-
-            if(this.getInput().equals("X")){
-                return null;
-            }
-
-            //garantir que não seja vazio
-            if(!this.checkIfNull(this.getInput())){
-                continue;
-            }
-            break;
-        }
-
+    //falta tratar caso o usuario escreva em branco
+    public Cart createCartOrder(Scanner sc){  //criação do carrinho 
         String newOrderAdress = this.getInput();
         Order newOrder = new Order(newOrderAdress);
         boolean doesHaveProduct;
@@ -174,7 +160,7 @@ public class ProductsManager extends Manager{
 
         //loop pro usuario colocar mais de 1 produto e escolher quando fechar o pedido
         while(true){
-            System.out.println("Digite o ID do produto a ser comprado: ");
+            System.out.println("Digite o ID do produto a ser colocado no carrinho: ");
             System.out.println("(Digite F para fechar o pedido, X para cancelar)");
             this.setInput(sc.nextLine());
 
@@ -187,6 +173,11 @@ public class ProductsManager extends Manager{
 
             //garantir que não é vazio, sempre ser int e maior que 0
             if(!checkIfInt(this.getInput())){
+                continue;
+            }
+
+            //Acho que assim trata caso o usuario escreva em branco
+            if(!this.checkIfNull(this.getInput())){
                 continue;
             }
 
@@ -239,9 +230,17 @@ public class ProductsManager extends Manager{
                 break;
             }
         }
-        System.out.println("Pedido criado!");
-        return newOrder;
+        System.out.println("Pedido adicionado no carrinho!");
+        Cart newCart = new Cart(newOrder);
+        newCart.setClientItens(newOrder);
+        return newCart;
     }
+
+        public void addCartToOrder(Order clientItens){//teste
+            Cart clientCart = new Cart(clientItens);
+            clientCart.addCartToOrder(clientItens);
+        }
+
 
     public void showAllProducts(){
         for(Product product : productsBank){
