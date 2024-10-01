@@ -34,7 +34,7 @@ public class Manager{
     }
 
     public boolean checkSize(String input, int size){
-        if(input.length() != size){
+        if(input.length() < size){
             System.out.println("\n ERRO: Quantidade de caracteres incorreta. \n");
             return false;
         }

@@ -44,7 +44,7 @@ public class ClientsManager extends Manager{
                     System.out.println("Seu CPF? (somente números)");
                 break;
                 case 3:
-                    System.out.println("Seu login?");
+                    System.out.println("Seu nome de usuário?");
                 break;
                 case 4:
                     System.out.println("Sua senha? (mínimo 8 caracteres)");
@@ -78,8 +78,8 @@ public class ClientsManager extends Manager{
                         continue;
                     }
                     newClientAge = Integer.parseInt(this.getInput());
-                    if(newClientAge > 99){
-                        System.out.println("\n ERRO: Idade inválida. (Máximo 99 anos) \n");
+                    if(newClientAge > 99 || newClientAge < 18){
+                        System.out.println("\n ERRO: Idade inválida. (Máximo 99 anos e mínimo 18 anos) \n");
                         continue;
                     }
                     this.increaseMenu();
@@ -129,13 +129,14 @@ public class ClientsManager extends Manager{
     public void createCard(Scanner sc){
         //var novas para a criação do cartão
         String newCardType = "";
-        String newCardName = "";
+        String newCardOwner = "";
         String newCardNumber = "";
         String newCardCvv = "";
         String newCardExpDate = "";
+        String newCardName = "";
 
         this.initiateMenu();
-        while(this.getCurrentStateMenu() != 5){
+        while(this.getCurrentStateMenu() != 6){
             //instruções para o usuário
             switch(this.getCurrentStateMenu()){
                 case 0:
@@ -155,6 +156,8 @@ public class ClientsManager extends Manager{
                 case 4:
                     System.out.println("Data de validade? (mm/aa)");
                 break;
+                case 5:
+                System.out.println("Insira um nome para o Cartão:");
             }
 
             System.out.println("(Digite < para voltar, X para cancelar)");
@@ -188,7 +191,7 @@ public class ClientsManager extends Manager{
                     if(!this.checkIfNull(this.getInput())){
                         continue;
                     } 
-                    newCardName = this.getInput();
+                    newCardOwner = this.getInput();
                     this.increaseMenu();
                 break;
                 case 2:
@@ -249,9 +252,16 @@ public class ClientsManager extends Manager{
                     }
                     this.increaseMenu();
                 break;
+                case 5:
+                    if(!this.checkIfNull(this.getInput())){
+                    continue;
+                    }
+                    newCardName = this.getInput();
+                    this.increaseMenu();
+                break;
             }
         }
-        this.loggedInClient.addCards(new Card(newCardName, newCardNumber, newCardCvv, newCardExpDate, (newCardType.equals("C") ? true  : false)));
+        this.loggedInClient.addCards(new Card( newCardOwner,newCardName,newCardNumber, newCardCvv, newCardExpDate,  (newCardType.equals("C") ? true  : false)));
         System.out.println("Cartão cadastrado com sucesso! \n");
     }
 
@@ -277,7 +287,7 @@ public class ClientsManager extends Manager{
         while(this.getCurrentStateMenu() != 2){
             switch(this.getCurrentStateMenu()){
                 case 0:
-                    System.out.println("Login: ");
+                    System.out.println("Nome de usuário: ");
                 break;
                 case 1:
                     System.out.println("Senha: ");

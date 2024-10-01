@@ -81,7 +81,7 @@ public class App{
     public static void menu(){
 
         System.out.println("-MENU-");
-        System.out.println("C: criar cartão e adicionar a conta");
+        System.out.println("C: criar cartão e adicionar à conta(Limite 3)");
         System.out.println("D: ver dados da conta");
         System.out.println("P: criar produto");
         System.out.println("S: procurar produtos");
