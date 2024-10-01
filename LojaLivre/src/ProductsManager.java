@@ -65,6 +65,11 @@ public class ProductsManager extends Manager{
                     if(!this.checkIfNull(this.getInput())){
                         continue;
                     }
+                    //garantir que o limite seja de 150 caracteres
+                    if(this.getInput().length() > 150){//por motivos de teste está para 10 caracteres
+                        System.out.println("\n ERRO: Caracteres maximo ultrapassado \n");
+                        continue;
+                    }
                     newProductDescrpt = this.getInput();
                     this.increaseMenu();
                 break;

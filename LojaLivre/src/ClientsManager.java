@@ -133,9 +133,10 @@ public class ClientsManager extends Manager{
         String newCardNumber = "";
         String newCardCvv = "";
         String newCardExpDate = "";
+        String newCardOwner= "";
 
         this.initiateMenu();
-        while(this.getCurrentStateMenu() != 5){
+        while(this.getCurrentStateMenu() != 6){
             //instruções para o usuário
             switch(this.getCurrentStateMenu()){
                 case 0:
@@ -154,6 +155,9 @@ public class ClientsManager extends Manager{
                 break;
                 case 4:
                     System.out.println("Data de validade? (mm/aa)");
+                break;
+                case 5:
+                System.out.println("Insira um nome para o Cartão:");
                 break;
             }
 
@@ -188,7 +192,7 @@ public class ClientsManager extends Manager{
                     if(!this.checkIfNull(this.getInput())){
                         continue;
                     } 
-                    newCardName = this.getInput();
+                    newCardOwner = this.getInput();
                     this.increaseMenu();
                 break;
                 case 2:
@@ -249,10 +253,39 @@ public class ClientsManager extends Manager{
                     }
                     this.increaseMenu();
                 break;
+                case 5:
+                    if(!this.checkIfNull(this.getInput())){
+                    continue;
+                    }
+                    newCardName = this.getInput();
+                    this.increaseMenu();
+                break;
             }
         }
-        this.loggedInClient.addCards(new Card(newCardName, newCardNumber, newCardCvv, newCardExpDate, (newCardType.equals("C") ? true  : false)));
+        this.loggedInClient.addCards(new Card( newCardOwner,newCardName,newCardNumber, newCardCvv, newCardExpDate,  (newCardType.equals("C") ? true  : false)));
         System.out.println("Cartão cadastrado com sucesso! \n");
+    }
+        
+    public void createNewCart(Scanner sc, Order newCart){
+        if(newCart == null){
+            return;
+        }
+
+        if(this.loggedInClient.getCartClient() != null){
+            while(true){
+                System.out.println("Já existe um carrinho");
+                System.out.println("Deseja sobrescrever o carrinho atual? (S/N)");
+                this.setInput(sc.nextLine());
+                if(this.getInput().equals("N")){
+                    return;
+                }else if(this.getInput().equals("S")){
+                    break;
+                }else{
+                    System.out.println("\n ERRO: somente S e N permitidos. \n");
+                }
+            }
+        }
+        this.loggedInClient.setCart(newCart);
     }
 
     public void addProductToSeller(Product newProduct){
@@ -268,6 +301,8 @@ public class ClientsManager extends Manager{
         ((Seller) this.loggedInClient).addProducts(newProduct);
 
     }
+
+    
 
     public void logInClient(Scanner sc){
         String tempLogin = "";
@@ -336,6 +371,10 @@ public class ClientsManager extends Manager{
         for(Order order : this.loggedInClient.getOrdersClient()){
             System.out.println(order.toString() + "\n");
         }
+    }
+
+    public void showLoggedInCart(){
+        System.out.println(this.loggedInClient.getCartClient().toString());
     }
 
     public boolean getIsLoggedIn(){

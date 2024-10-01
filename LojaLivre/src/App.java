@@ -67,7 +67,15 @@ public class App{
                 case 'L':
                     clientsManager.logOut();
                 break;
-            
+
+                case 'B':
+                    clientsManager.createNewCart(sc, productsManager.createOrder(sc));
+                break;
+
+                case 'T':
+                    clientsManager.showLoggedInCart();
+                break;
+
                 default:
                     System.out.println("\n ERRO: Comando inválido. \n");
                 break;
@@ -85,8 +93,10 @@ public class App{
         System.out.println("D: ver dados da conta");
         System.out.println("P: criar produto");
         System.out.println("S: procurar produtos");
+        System.out.println("B: Criar carrinho");
+        System.out.println("T: Ver carinho");
         System.out.println("E: apagar produto");
-        System.out.println("O: criar pedido");
+        System.out.println("O: criar pedido");//TESTE, NO CASO SO PARA ELE MODIFICAR DO CARRINHO PARA O PEDIDO FALTA ISSO,e ver como faço para sobrepor os carrinhos
         System.out.println("V: ver pedidos da conta");
         System.out.println("L: deslogar da conta");
         System.out.println("X: sair");

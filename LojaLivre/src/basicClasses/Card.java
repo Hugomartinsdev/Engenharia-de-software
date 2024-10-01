@@ -1,7 +1,7 @@
 package basicClasses;
 
 public class Card{
-    private String nameOwnerCard, numCard, cvvCard, expDateCard;
+    private String nameOwnerCard, numCard, cvvCard, expDateCard,nameCard;
     private boolean cardType;
     
     //Lembrar como faz a comparação para ver que o dono do cartão seja o mesmo do cliente
@@ -9,8 +9,9 @@ public class Card{
     // botar na opção 1 ou credito depenendo da resposta colocar true ou false,true é credito
     //ver se crio ou aqui ou dentro do main um  String para dizer que esta expirado ou não ou só mando a mensagem
 
-    public Card(String nameOwnerCard, String numCard, String cvvCard, String expDateCard, boolean cardType){
+    public Card(String nameOwnerCard, String nameCard,String numCard, String cvvCard, String expDateCard, boolean cardType){
         this.nameOwnerCard = nameOwnerCard;
+        this.nameCard = nameCard;
         this.numCard = numCard;
         this.cvvCard = cvvCard;
         this.expDateCard = expDateCard;
@@ -22,6 +23,14 @@ public class Card{
     }
     public void setNameOwnerCard(String nameOwnerCard){
         this.nameOwnerCard = nameOwnerCard;
+    }
+
+    public String getNameCard() {
+        return nameCard;
+    }
+
+    public void setNameCard(String nameCard) {
+        this.nameCard = nameCard;
     }
 
     public String getNumCard(){
@@ -54,8 +63,8 @@ public class Card{
 
     @Override
     public String toString(){
-        return "Cartao: \n Dono: " + nameOwnerCard + "\n Numero do Cartão: " + numCard + "\n CVV: " + cvvCard + 
-               "\n Tipo do Cartão: " + (cardType ? "Credito" : "Debito") + "\n Validade: " + expDateCard + "\n";
+        return "Cartao: \n Dono: " + nameOwnerCard + " \n Nome do Cartão: " + nameCard+"\n Numero do Cartão: " + numCard + "\n CVV: " + cvvCard + 
+        "\n Tipo do Cartão: " + (cardType ? "Credito" : "Debito") + "\n Validade: " + expDateCard + "\n";
     }
     
     

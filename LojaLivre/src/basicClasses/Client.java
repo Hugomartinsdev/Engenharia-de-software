@@ -7,6 +7,7 @@ public class Client{
     private int ageClient;
     private ArrayList<Card> cardsClient;
     private ArrayList<Order> ordersClient;
+    private Order cartClient;
 
     public Client(String nameCient, int ageClient, String cpfClient, String loginClient, String passClient){
         this.nameCient = nameCient;
@@ -16,6 +17,7 @@ public class Client{
         this.passClient = passClient;
         this.cardsClient = new ArrayList<>();
         this.ordersClient = new ArrayList<>();
+        this.cartClient = null;
     }
 
     public String getNameCient(){
@@ -97,9 +99,20 @@ public class Client{
         return output;
     }
 
+
+    //para o carrinho
+    
+    public Order getCartClient(){
+        return cartClient;
+    }
+    public void setCart(Order newCart){
+        this.cartClient = newCart;
+    }
+
     @Override
     public String toString(){
         return nameCient + ": \n Idade: " + ageClient + "\n Cpf: " + cpfClient + "\n Cartões: \n " + 
                this.getAllCards() + "\n Pedidos: \n " + this.getAllOrders();
     }
+
 }

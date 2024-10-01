@@ -6,9 +6,11 @@ public class Order{
 
     private ArrayList<Product> productsOrder;
     private String adressOrder;
+    private ArrayList<Product> productsCart;
 
     public Order(String adressOrder){
         this.productsOrder = new ArrayList<>();
+        this.productsCart = new ArrayList<>();
         this.adressOrder = adressOrder;
     }
 
@@ -38,12 +40,43 @@ public class Order{
         }
         return output;
     }
-
-    public String getAdressOrder(){
-        return adressOrder;
-    }
+    
     public void setAdressOrder(String adressOrder){
         this.adressOrder = adressOrder;
+    }
+    
+    
+    //Carrinho
+    public ArrayList<Product> getProductsCart() {
+        return productsCart;
+    }
+
+    public Product getProductsFromArrayCart(int index){
+        return productsCart.get(index);
+    }
+
+    public void addProductsCart(Product newProduct){
+        this.productsCart.add(newProduct);
+    }
+
+    public String getAllProductsToCart(){
+        String output = "";
+        for(Product product : productsCart){
+            output += product.toString() + " ";
+        }
+        return output;
+    }
+    
+    public ArrayList<Product> getProductsArrayCart(){
+        return this.productsCart;
+    }
+
+    public float getTotalPriceToCart(){
+        float output = 0;
+        for(Product product : productsCart){
+            output += product.getPriceProduct() * product.getQntProduct();
+        }
+        return output;
     }
 
     @Override
@@ -51,6 +84,4 @@ public class Order{
         return "Pedido: \n Produtos: " + this.getAllProducts() + "\n Custo total: " + this.getTotalPrice() + "\n Endereço de entrega: " + this.adressOrder + "\n";
     }
 
-    
-    
 }
