@@ -1,9 +1,31 @@
 package basicClasses;
 
+import org.w3c.dom.Document;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import java.io.File;
+
 public class Manager{
 
     private int currentStateMenu;
     private String input;
+
+    private Document doc;
+    private DOMSource source;
+    private Transformer transformer;
+
+    public Manager(String filePath) throws Exception{
+        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+        this.doc = dBuilder.parse(new File(filePath));
+        this.source = new DOMSource(doc);
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        this.transformer = transformerFactory.newTransformer();
+    }
 
     public String getInput(){
         return this.input;
@@ -25,8 +47,18 @@ public class Manager{
         this.currentStateMenu = (this.currentStateMenu == 0) ? 0 : this.currentStateMenu - 1;
     }
 
+    public Document getDoc(){
+        return this.doc;
+    }
+
+    public DOMSource getSource() {
+        return this.source;
+    }
+
+    public Transformer getTransformer() { return this.transformer; }
+
     public boolean checkIfNull(String input){
-        if(input.equals("")){
+        if(input.isEmpty()){
             System.out.println("\n ERRO: Entrada vazia. \n");
             return false;
         }
@@ -82,5 +114,9 @@ public class Manager{
         }
         return this.checkIfNull(input);
     }
-    
+
+    public boolean checkIfElementEquals(String elementTag, int elementId, String value){
+        return this.doc.getElementsByTagName(elementTag).item(elementId).getTextContent().equals(value);
+    }
+
 }

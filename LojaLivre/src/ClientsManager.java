@@ -1,3 +1,4 @@
+import java.io.File;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -10,16 +11,23 @@ import basicClasses.Order;
 import basicClasses.Product;
 import basicClasses.Seller;
 
+import org.w3c.dom.Element;
+
+import javax.xml.transform.stream.StreamResult;
+
 public class ClientsManager extends Manager{
 
     private ArrayList<Client> clientsBank;
     private boolean isLoggedIn;
     private Client loggedInClient;
+    private StreamResult result;
 
-    public ClientsManager(){
+    public ClientsManager() throws Exception{
+        super("LojaLivre/src/databases/clientDB.xml");
         this.clientsBank = new ArrayList<>();
         this.isLoggedIn = false;
         this.loggedInClient = null;
+        this.result = new StreamResult(new File("LojaLivre/src/databases/clientDB.xml"));
     }
 
     public void createClient(Scanner sc){
@@ -96,7 +104,8 @@ public class ClientsManager extends Manager{
                     for(Client client : this.clientsBank){
                         if(client.getCpfClient().equals(newClientCpf)){
                             System.out.println("\n ERRO: Cliente com esse CPF já existe. \n");
-                            continue;
+                            this.decreaseMenu();
+                            break;
                         }
                     }
                     this.increaseMenu();
@@ -107,6 +116,13 @@ public class ClientsManager extends Manager{
                         continue;
                     }
                     newClientLogin = this.getInput();
+                    for(Client client : this.clientsBank){
+                        if(client.getLoginClient().equals(newClientLogin)){
+                            System.out.println("\n ERRO: Cliente com esse login já existe. \n");
+                            this.decreaseMenu();
+                            break;
+                        }
+                    }
                     this.increaseMenu();
                 break;
                 case 4:
@@ -121,6 +137,30 @@ public class ClientsManager extends Manager{
                     this.increaseMenu();
                 break;
             }
+        }
+
+        Element newClient = this.getDoc().createElement("client");
+
+        newClient.appendChild(this.getDoc().createElement("name"));
+        newClient.getElementsByTagName("name").item(0).appendChild(this.getDoc().createTextNode(newClientName));
+
+        newClient.appendChild(this.getDoc().createElement("age"));
+        newClient.getElementsByTagName("age").item(0).appendChild(this.getDoc().createTextNode(Integer.toString(newClientAge)));
+
+        newClient.appendChild(this.getDoc().createElement("cpf"));
+        newClient.getElementsByTagName("cpf").item(0).appendChild(this.getDoc().createTextNode(newClientCpf));
+
+        newClient.appendChild(this.getDoc().createElement("login"));
+        newClient.getElementsByTagName("login").item(0).appendChild(this.getDoc().createTextNode(newClientLogin));
+
+        newClient.appendChild(this.getDoc().createElement("pass"));
+        newClient.getElementsByTagName("pass").item(0).appendChild(this.getDoc().createTextNode(newClientPass));
+
+        this.getDoc().getElementsByTagName("clientsBank").item(0).appendChild(newClient);
+        try{
+            this.getTransformer().transform(this.getSource(), result);
+        }catch (Exception e){
+            System.out.println("erro misterioso");
         }
         clientsBank.add(new Client(newClientName, newClientAge, newClientCpf, newClientLogin, newClientPass));
         System.out.println("Conta criada com sucesso! \n");
@@ -203,7 +243,7 @@ public class ClientsManager extends Manager{
                     }
                     if(!(this.checkSize(this.getInput(), 16) || this.checkSize(this.getInput(), 19))){
                         //pra apagar a duplicação de erro
-                        System.out.print(String.format("\033[%dA", 3));
+                        System.out.printf("\033[%dA", 3);
                         System.out.print("\033[2K");
                         continue;
                     }
@@ -216,8 +256,7 @@ public class ClientsManager extends Manager{
                 break;
                 case 3:
                     //garantir que não seja vazio, possua somente números e que seja sempre tamanho 3
-                    if(this.getInput().equals("")){
-                        System.out.println("\n ERRO: Entrada vazia. \n");
+                    if(!this.checkIfNull(this.getInput())){
                         continue;
                     }
                     newCardCvv = this.getInput();
@@ -262,7 +301,7 @@ public class ClientsManager extends Manager{
                 break;
             }
         }
-        this.loggedInClient.addCards(new Card( newCardOwner,newCardName,newCardNumber, newCardCvv, newCardExpDate,  (newCardType.equals("C") ? true  : false)));
+        this.loggedInClient.addCards(new Card( newCardOwner,newCardName,newCardNumber, newCardCvv, newCardExpDate,  (newCardType.equals("C"))));
         System.out.println("Cartão cadastrado com sucesso! \n");
     }
         
@@ -340,9 +379,10 @@ public class ClientsManager extends Manager{
                 break;
                 case 1:
                     tempPass = this.getInput();
-                    for(Client client : clientsBank){
-                        if(client.getLoginClient().equals(tempLogin) && client.getPassClient().equals(tempPass)){
-                            this.loggedInClient = client;
+                    for (int i = 0; i < this.getDoc().getElementsByTagName("pass").getLength(); i++) {
+                        if(this.checkIfElementEquals("login", i, tempLogin) &&
+                        this.checkIfElementEquals("pass", i, tempPass)){
+                            this.loggedInClient = this.clientsBank.get(i);
                             isLoggedIn = true;
                             System.out.println("Login confirmado \n");
                             return;
@@ -361,7 +401,7 @@ public class ClientsManager extends Manager{
     }
 
     public void addOrderClient(Order newOrder){
-        if(newOrder.equals(null)){
+        if(newOrder == null){
             return;
         }
         this.loggedInClient.addOrders(newOrder);

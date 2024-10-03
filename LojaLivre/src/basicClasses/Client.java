@@ -67,7 +67,7 @@ public class Client{
     public String getAllCards(){
         String output = "";
 
-        if(cardsClient.size() == 0){
+        if(cardsClient.isEmpty()){
             return "Nenhum cartão disponível";
         }
 
@@ -89,7 +89,7 @@ public class Client{
     public String getAllOrders(){
         String output = "";
 
-        if(ordersClient.size() == 0){
+        if(ordersClient.isEmpty()){
             return "Nenhum pedido disponível";
         }
 

@@ -1,3 +1,4 @@
+import javax.xml.parsers.ParserConfigurationException;
 import java.util.Scanner;
 
 public class App{
@@ -8,8 +9,12 @@ public class App{
         sc = new Scanner(System.in);
         char menuInput = '.';
 
-        clientsManager = new ClientsManager();
-        productsManager = new ProductsManager();
+        try{
+            clientsManager = new ClientsManager();
+            productsManager = new ProductsManager();
+        }catch(Exception e){
+            System.out.println("erro misterioso");
+        }
 
         do{
             if(!clientsManager.getIsLoggedIn()){

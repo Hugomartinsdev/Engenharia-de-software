@@ -1,16 +1,22 @@
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 import basicClasses.Product;
 import basicClasses.Manager;
 import basicClasses.Order;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerConfigurationException;
 
 public class ProductsManager extends Manager{
 
     private ArrayList<Product> productsBank;
     private int idGen = 1;
 
-    public ProductsManager(){
+    public ProductsManager() throws Exception {
+        super("LojaLivre/src/databases/productDB.xml");
         this.productsBank = new ArrayList<>();
     }
 
