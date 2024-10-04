@@ -41,6 +41,14 @@ public class Manager{
         return this.checkIfNull(input);
     }
 
+    public boolean checkIsSmaller(String input, int size){
+        if(input.length() < size){
+            System.out.println("\n ERRO: Quantidade de caracteres incorreta. \n");
+            return false;
+        }
+        return this.checkIfNull(input);
+    }
+
     public boolean checkIfInt(String input){
         try{
             Integer.parseInt(input);

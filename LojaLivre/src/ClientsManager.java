@@ -44,7 +44,7 @@ public class ClientsManager extends Manager{
                     System.out.println("Seu CPF? (somente números)");
                 break;
                 case 3:
-                    System.out.println("Seu login?");
+                    System.out.println("Seu nome de usuário?");
                 break;
                 case 4:
                     System.out.println("Sua senha? (mínimo 8 caracteres)");
@@ -78,8 +78,8 @@ public class ClientsManager extends Manager{
                         continue;
                     }
                     newClientAge = Integer.parseInt(this.getInput());
-                    if(newClientAge > 99){
-                        System.out.println("\n ERRO: Idade inválida. (Máximo 99 anos) \n");
+                    if(newClientAge > 99 || newClientAge < 18){
+                        System.out.println("\n ERRO: Idade inválida. (Máximo 99 anos e Mínimo 18 anos) \n");
                         continue;
                     }
                     this.increaseMenu();
@@ -114,7 +114,7 @@ public class ClientsManager extends Manager{
                     if(!this.checkIfNull(this.getInput())){
                         continue;
                     }
-                    if(!this.checkSize(this.getInput(), 8)){
+                    if(!this.checkIsSmaller(this.getInput(), 8)){
                         continue;
                     }
                     newClientPass = this.getInput();
